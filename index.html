@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario MOR</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    input, button {
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .events-list {
+      list-style: none;
+      padding: 0;
+    }
+    .event-item {
+      background: #f9f9f9;
+      padding: 12px 16px;
+      border-left: 5px solid #3498db;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .event-info {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    .event-date {
+      font-weight: bold;
+      color: #7f8c8d;
+    }
+    .delete-btn {
+      background-color: #e74c3c;
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📅 Calendario MOR</h1>
+
+    <div class="form-group">
+      <input type="date" id="eventDate">
+      <input type="text" id="eventTitle" placeholder="Escribe un evento o nota...">
+      <button onclick="addEvent()">Agregar Evento</button>
+    </div>
+
+    <ul id="eventsList" class="events-list">
+      <!-- Los eventos se cargarán aquí automáticamente -->
+    </ul>
+  </div>
+
+  <!-- SDKs de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3DxpUgdxQZ5f5VOBO_NHfhyLnn-IwWbo",
+      authDomain: "calendario-875fd.firebaseapp.com",
+      databaseURL: "https://calendario-875fd-default-rtdb.firebaseio.com",
+      projectId: "calendario-875fd",
+      storageBucket: "calendario-875fd.firebasestorage.app",
+      messagingSenderId: "2826490976",
+      appId: "1:2826490976:web:04cc1fb6e4a6a4f36c5f05",
+      measurementId: "G-THY554NC9Z"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const eventsRef = database.ref('eventos');
+
+    // Escuchar eventos en tiempo real
+    eventsRef.on('value', (snapshot) => {
+      const eventsList = document.getElementById('eventsList');
+      eventsList.innerHTML = '';
+      const data = snapshot.val();
+
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const event = data[key];
+          const li = document.createElement('li');
+          li.className = 'event-item';
+          li.innerHTML = `
+            <div class="event-info">
+              <span class="event-date">${event.date}</span>
+              <span>${event.title}</span>
+            </div>
+            <button class="delete-btn" onclick="deleteEvent('${key}')">Eliminar</button>
+          `;
+          eventsList.appendChild(li);
+        });
+      } else {
+        eventsList.innerHTML = '<p style="text-align:center; color:#888;">No hay eventos guardados aún.</p>';
+      }
+    });
+
+    // Función para agregar un evento
+    function addEvent() {
+      const dateInput = document.getElementById('eventDate');
+      const titleInput = document.getElementById('eventTitle');
+
+      if (!dateInput.value || !titleInput.value.trim()) {
+        alert('Por favor selecciona una fecha y escribe un texto.');
+        return;
+      }
+
+      eventsRef.push({
+        date: dateInput.value,
+        title: titleInput.value.trim()
+      });
+
+      titleInput.value = '';
+    }
+
+    // Función para eliminar un evento
+    function deleteEvent(id) {
+      eventsRef.child(id).remove();
+    }
+  </script>
+</body>
+</html>
