@@ -180,12 +180,6 @@
       gap: 2px;
     }
 
-    .person-header .country-tag {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--plomo-medio);
-    }
-
     .person-header.yeider { color: var(--plomo-oscuro); }
     .person-header.nataly { color: var(--rosado); }
 
@@ -384,7 +378,7 @@
     <!-- Contenedor Semanal Dinámico -->
     <div id="weekContainer" class="week-container"></div>
 
-    <!-- Sección de Planes Postergados / Lista F sin fecha -->
+    <!-- Sección de Planes Postergados -->
     <div class="postponed-section">
       <h3>📌 Planes Pendientes / Aplazados (Sin Fecha)</h3>
       <ul id="postponedList" class="postponed-list">
@@ -432,8 +426,8 @@
     let allPostponed = {};
     let activeSlotInfo = null;
 
-    // Lista de horas cada 1 hora
-    const baseHours = [
+    // Horas base de Chile
+    const chileBaseHours = [
       "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", 
       "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", 
       "20:00", "21:00", "22:00", "23:00"
@@ -539,7 +533,7 @@
 
         let columnsHTML = `
           <div class="day-columns">
-            <!-- Columna Yeider: Hora Chile principal, Hora Bolivia secundaria -->
+            <!-- Columna Yeider: Hora Chile principal (08:00), Hora Bolivia secundaria (07:00) -->
             <div class="person-column">
               <div class="person-header yeider">
                 <span>👦 YEIDER</span>
@@ -547,7 +541,7 @@
               ${renderHourSlots(dateStr, 'yeider', diffHours)}
             </div>
 
-            <!-- Columna Nataly: Hora Bolivia principal, Hora Chile secundaria -->
+            <!-- Columna Nataly: Hora Bolivia principal (07:00), Hora Chile secundaria (08:00) -->
             <div class="person-column">
               <div class="person-header nataly">
                 <span>👧 NATALY</span>
@@ -563,23 +557,27 @@
     }
 
     function renderHourSlots(dateStr, person, diffHours) {
-      return baseHours.map(baseHour => {
+      return chileBaseHours.map(chileHour => {
         let primaryTimeText = "";
         let secondaryTimeText = "";
+        let slotHourKey = "";
+
+        // Hora equivalente de Bolivia para esa misma fila
+        const boHour = formatHourOffset(chileHour, -diffHours);
 
         if (person === 'yeider') {
-          // Yeider: Principal = Hora Chile | Secundaria = Hora Bolivia
-          const boHour = formatHourOffset(baseHour, -diffHours);
-          primaryTimeText = `CL ${baseHour}`;
+          // Yeider: Principal = Chile 08:00 | Secundaria = Bolivia 07:00
+          primaryTimeText = `CL ${chileHour}`;
           secondaryTimeText = `(BO ${boHour})`;
+          slotHourKey = chileHour;
         } else {
-          // Nataly: Principal = Hora Bolivia | Secundaria = Hora Chile
-          const clHour = formatHourOffset(baseHour, diffHours);
-          primaryTimeText = `BO ${baseHour}`;
-          secondaryTimeText = `(CL ${clHour})`;
+          // Nataly: Principal = Bolivia 07:00 | Secundaria = Chile 08:00
+          primaryTimeText = `BO ${boHour}`;
+          secondaryTimeText = `(CL ${chileHour})`;
+          slotHourKey = boHour;
         }
 
-        const plans = getPlansForSlot(dateStr, person, baseHour);
+        const plans = getPlansForSlot(dateStr, person, slotHourKey);
         
         const plansHTML = plans.map(p => `
           <div class="plan-item ${p.status || ''}">
@@ -600,7 +598,7 @@
               <span class="sec-time">${secondaryTimeText}</span>
             </div>
             ${plansHTML}
-            <button class="add-btn-slot" onclick="openPlanModal('${dateStr}', '${person}', '${baseHour}')">+ Agregar Plan</button>
+            <button class="add-btn-slot" onclick="openPlanModal('${dateStr}', '${person}', '${slotHourKey}')">+ Agregar Plan</button>
           </div>
         `;
       }).join('');
