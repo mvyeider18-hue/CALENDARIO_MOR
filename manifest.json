@@ -1,0 +1,22 @@
+{
+  "short_name": "YEIDER & NATALY",
+  "name": "Calendario YEIDER & NATALY ❤️",
+  "icons": [
+    {
+      "src": "https://i.imgur.com/dQtMS38.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.imgur.com/dQtMS38.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#ffffff",
+  "theme_color": "#ff6b81",
+  "display": "standalone"
+}
