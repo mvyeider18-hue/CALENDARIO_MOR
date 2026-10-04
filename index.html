@@ -50,7 +50,7 @@
       text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
-    /* Clocks */
+    /* Clocks Header */
     .time-zones {
       display: flex;
       justify-content: center;
@@ -172,6 +172,16 @@
       padding-bottom: 8px;
       border-bottom: 2px dashed var(--plomo-claro);
       margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .person-header .country-tag {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--plomo-medio);
     }
 
     .person-header.yeider { color: var(--plomo-oscuro); }
@@ -190,9 +200,12 @@
     }
 
     .hour-time {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: var(--plomo-medio);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .plan-item {
@@ -319,7 +332,7 @@
 
     .modal-content h3 { margin-top: 0; color: var(--plomo-oscuro); }
 
-    .modal-content input, .modal-content select {
+    .modal-content input {
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
@@ -349,8 +362,8 @@
     <header>
       <h1>Yeider & Nataly ❤️</h1>
       <div class="time-zones">
-        <div class="time-badge">🇨🇱 Chile: <span id="timeChile">--:--</span></div>
-        <div class="time-badge">🇧🇴 Bolivia (La Paz): <span id="timeBolivia">--:--</span></div>
+        <div class="time-badge">🇧🇴 Bolivia (Yeider): <span id="timeBolivia">--:--</span></div>
+        <div class="time-badge">🇨🇱 Chile (Nataly): <span id="timeChile">--:--</span></div>
       </div>
     </header>
 
@@ -390,7 +403,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <script>
-    // Credenciales de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyD3DxpUgdxQZ5f5VOBO_NHfhyLnn-IwWbo",
       authDomain: "calendario-875fd.firebaseapp.com",
@@ -412,10 +424,10 @@
     let allPostponed = {};
     let activeSlotInfo = null;
 
-    const hoursList = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00"];
+    const baseHours = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00"];
     const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
-    // Horarios
+    // Actualizador de Relojes superiores
     function updateClocks() {
       const now = new Date();
       document.getElementById('timeChile').innerText = now.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit' });
@@ -423,6 +435,22 @@
     }
     setInterval(updateClocks, 1000);
     updateClocks();
+
+    // Obtener diferencia horaria entre Chile y Bolivia (1h en verano de Chile, 0h en invierno)
+    function getTimeDifferenceHours() {
+      const now = new Date();
+      const chileStr = now.toLocaleString('en-US', { timeZone: 'America/Santiago' });
+      const boliviaStr = now.toLocaleString('en-US', { timeZone: 'America/La_Paz' });
+      const chileDate = new Date(chileStr);
+      const boliviaDate = new Date(boliviaStr);
+      return Math.round((chileDate - boliviaDate) / (1000 * 60 * 60));
+    }
+
+    function formatHourOffset(baseHourStr, hourOffset) {
+      const [h, m] = baseHourStr.split(':').map(Number);
+      let calculatedHour = (h + hourOffset + 24) % 24;
+      return `${String(calculatedHour).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
 
     function getMonday(d) {
       d = new Date(d);
@@ -433,12 +461,10 @@
 
     // Calculador de Turno 7x7 Yeider
     function getYeiderShift(dateObj) {
-      // Base: Martes 6 Oct 2026 empieza Turno Día de 7 días (hasta Lunes 12 Oct)
-      const baseDate = new Date(2026, 9, 6); // 6 Octubre 2026
+      const baseDate = new Date(2026, 9, 6);
       const diffTime = dateObj.getTime() - baseDate.getTime();
       const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
       
-      // Ciclo completo de 28 días: 7 Día, 7 Descanso, 7 Noche, 7 Descanso
       let cycleDay = (diffDays % 28 + 28) % 28;
 
       if (cycleDay >= 0 && cycleDay < 7) {
@@ -452,7 +478,6 @@
       }
     }
 
-    // Sincronización Realtime
     plansRef.on('value', (snapshot) => {
       allPlans = snapshot.val() || {};
       renderWeek();
@@ -478,6 +503,8 @@
       document.getElementById('weekTitle').innerText = 
         `${currentStartOfWeek.getDate()} ${getMonthName(currentStartOfWeek.getMonth())} - ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())} ${endOfWeek.getFullYear()}`;
 
+      const diffDiff = getTimeDifferenceHours(); // Diferencia Chile vs Bolivia
+
       for (let i = 0; i < 7; i++) {
         const dayDate = new Date(currentStartOfWeek);
         dayDate.setDate(dayDate.getDate() + i);
@@ -499,16 +526,22 @@
 
         let columnsHTML = `
           <div class="day-columns">
-            <!-- Columna Yeider -->
+            <!-- Columna Yeider (Hora Bolivia) -->
             <div class="person-column">
-              <div class="person-header yeider">👦 YEIDER</div>
-              ${renderHourSlots(dateStr, 'yeider')}
+              <div class="person-header yeider">
+                <span>👦 YEIDER</span>
+                <span class="country-tag">🇧🇴 Hora Bolivia</span>
+              </div>
+              ${renderHourSlots(dateStr, 'yeider', -diffDiff)}
             </div>
 
-            <!-- Columna Nataly -->
+            <!-- Columna Nataly (Hora Chile) -->
             <div class="person-column">
-              <div class="person-header nataly">👧 NATALY</div>
-              ${renderHourSlots(dateStr, 'nataly')}
+              <div class="person-header nataly">
+                <span>👧 NATALY</span>
+                <span class="country-tag">🇨🇱 Hora Chile</span>
+              </div>
+              ${renderHourSlots(dateStr, 'nataly', 0)}
             </div>
           </div>
         `;
@@ -518,9 +551,10 @@
       }
     }
 
-    function renderHourSlots(dateStr, person) {
-      return hoursList.map(hour => {
-        const plans = getPlansForSlot(dateStr, person, hour);
+    function renderHourSlots(dateStr, person, hourOffset) {
+      return baseHours.map(baseHour => {
+        const localHour = formatHourOffset(baseHour, hourOffset);
+        const plans = getPlansForSlot(dateStr, person, baseHour);
         
         const plansHTML = plans.map(p => `
           <div class="plan-item ${p.status || ''}">
@@ -536,9 +570,11 @@
 
         return `
           <div class="hour-slot">
-            <span class="hour-time">⏰ ${hour}</span>
+            <div class="hour-time">
+              <span>⏰ ${localHour} ${person === 'yeider' ? '(BO)' : '(CL)'}</span>
+            </div>
             ${plansHTML}
-            <button class="add-btn-slot" onclick="openPlanModal('${dateStr}', '${person}', '${hour}')">+ Agregar Plan</button>
+            <button class="add-btn-slot" onclick="openPlanModal('${dateStr}', '${person}', '${baseHour}')">+ Agregar Plan</button>
           </div>
         `;
       }).join('');
@@ -577,7 +613,6 @@
       });
     }
 
-    // Funciones Modal & Guardado
     function openPlanModal(date, person, hour) {
       activeSlotInfo = { date, person, hour };
       document.getElementById('modalTitle').innerText = `Plan para ${person.toUpperCase()} (${hour})`;
@@ -621,7 +656,6 @@
       postponedRef.child(key).remove();
     }
 
-    // Utilitarios
     function formatDate(d) {
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
