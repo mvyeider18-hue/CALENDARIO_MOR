@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendario YEIDER & NATALY ❤️</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --rosado: #ff6b81;
@@ -43,28 +43,30 @@
     }
 
     header h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 2.2rem;
+      letter-spacing: -0.5px;
       color: var(--rosado);
       margin: 0;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      text-transform: uppercase;
     }
 
     /* Clocks Header */
     .time-zones {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--plomo-medio);
-      margin-top: 5px;
+      margin-top: 8px;
       flex-wrap: wrap;
     }
     .time-badge {
       background: var(--plomo-claro);
-      padding: 5px 12px;
-      border-radius: 15px;
+      padding: 6px 14px;
+      border-radius: 20px;
       border: 1px solid #dfe4ea;
     }
 
@@ -99,7 +101,7 @@
     }
 
     #weekTitle {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--plomo-oscuro);
       text-align: center;
@@ -192,20 +194,26 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       background: #fafafa;
-      padding: 6px;
+      padding: 6px 8px;
       border-radius: 8px;
       border-left: 3px solid var(--plomo-medio);
     }
 
     .hour-time {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: var(--plomo-medio);
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 6px;
+    }
+
+    .hour-time .sec-time {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #a4b0be;
     }
 
     .plan-item {
@@ -360,10 +368,10 @@
 
   <div class="container">
     <header>
-      <h1>Yeider & Nataly ❤️</h1>
+      <h1>YEIDER & NATALY ❤️</h1>
       <div class="time-zones">
-        <div class="time-badge">🇧🇴 Bolivia (Yeider): <span id="timeBolivia">--:--</span></div>
-        <div class="time-badge">🇨🇱 Chile (Nataly): <span id="timeChile">--:--</span></div>
+        <div class="time-badge">🇧🇴 Bolivia: <span id="timeBolivia">--:--</span></div>
+        <div class="time-badge">🇨🇱 Chile: <span id="timeChile">--:--</span></div>
       </div>
     </header>
 
@@ -424,7 +432,12 @@
     let allPostponed = {};
     let activeSlotInfo = null;
 
-    const baseHours = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00"];
+    // Lista de horas cada 1 hora
+    const baseHours = [
+      "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", 
+      "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", 
+      "20:00", "21:00", "22:00", "23:00"
+    ];
     const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
     // Actualizador de Relojes superiores
@@ -436,7 +449,7 @@
     setInterval(updateClocks, 1000);
     updateClocks();
 
-    // Obtener diferencia horaria entre Chile y Bolivia (1h en verano de Chile, 0h en invierno)
+    // Obtener diferencia horaria entre Chile y Bolivia
     function getTimeDifferenceHours() {
       const now = new Date();
       const chileStr = now.toLocaleString('en-US', { timeZone: 'America/Santiago' });
@@ -503,7 +516,7 @@
       document.getElementById('weekTitle').innerText = 
         `${currentStartOfWeek.getDate()} ${getMonthName(currentStartOfWeek.getMonth())} - ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())} ${endOfWeek.getFullYear()}`;
 
-      const diffDiff = getTimeDifferenceHours(); // Diferencia Chile vs Bolivia
+      const diffHours = getTimeDifferenceHours(); // Diferencia Chile - Bolivia
 
       for (let i = 0; i < 7; i++) {
         const dayDate = new Date(currentStartOfWeek);
@@ -526,22 +539,20 @@
 
         let columnsHTML = `
           <div class="day-columns">
-            <!-- Columna Yeider (Hora Bolivia) -->
+            <!-- Columna Yeider: Hora Chile principal, Hora Bolivia secundaria -->
             <div class="person-column">
               <div class="person-header yeider">
                 <span>👦 YEIDER</span>
-                <span class="country-tag">🇧🇴 Hora Bolivia</span>
               </div>
-              ${renderHourSlots(dateStr, 'yeider', -diffDiff)}
+              ${renderHourSlots(dateStr, 'yeider', diffHours)}
             </div>
 
-            <!-- Columna Nataly (Hora Chile) -->
+            <!-- Columna Nataly: Hora Bolivia principal, Hora Chile secundaria -->
             <div class="person-column">
               <div class="person-header nataly">
                 <span>👧 NATALY</span>
-                <span class="country-tag">🇨🇱 Hora Chile</span>
               </div>
-              ${renderHourSlots(dateStr, 'nataly', 0)}
+              ${renderHourSlots(dateStr, 'nataly', diffHours)}
             </div>
           </div>
         `;
@@ -551,9 +562,23 @@
       }
     }
 
-    function renderHourSlots(dateStr, person, hourOffset) {
+    function renderHourSlots(dateStr, person, diffHours) {
       return baseHours.map(baseHour => {
-        const localHour = formatHourOffset(baseHour, hourOffset);
+        let primaryTimeText = "";
+        let secondaryTimeText = "";
+
+        if (person === 'yeider') {
+          // Yeider: Principal = Hora Chile | Secundaria = Hora Bolivia
+          const boHour = formatHourOffset(baseHour, -diffHours);
+          primaryTimeText = `CL ${baseHour}`;
+          secondaryTimeText = `(BO ${boHour})`;
+        } else {
+          // Nataly: Principal = Hora Bolivia | Secundaria = Hora Chile
+          const clHour = formatHourOffset(baseHour, diffHours);
+          primaryTimeText = `BO ${baseHour}`;
+          secondaryTimeText = `(CL ${clHour})`;
+        }
+
         const plans = getPlansForSlot(dateStr, person, baseHour);
         
         const plansHTML = plans.map(p => `
@@ -571,7 +596,8 @@
         return `
           <div class="hour-slot">
             <div class="hour-time">
-              <span>⏰ ${localHour} ${person === 'yeider' ? '(BO)' : '(CL)'}</span>
+              <span>⏰ ${primaryTimeText}</span>
+              <span class="sec-time">${secondaryTimeText}</span>
             </div>
             ${plansHTML}
             <button class="add-btn-slot" onclick="openPlanModal('${dateStr}', '${person}', '${baseHour}')">+ Agregar Plan</button>
