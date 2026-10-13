@@ -7,32 +7,34 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/SPBevo4.png">
   <link rel="apple-touch-icon" href="https://i.imgur.com/SPBevo4.png">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Carga de Montserrat con pesos ligeros (200 ExtraLight, 300 Light, 400 Regular) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --rosado: #ff6b81;
-      --rosado-hover: #ff4757;
-      --plomo-oscuro: #2f3542;
-      --plomo-claro: #f1f2f6;
-      --plomo-medio: #747d8c;
+      --oscuro-principal: #2a0000;
+      --vino-borbona: #62152d;
+      --oliva-suave: #8f8a70;
+      --marron-calido: #5a4943;
+      
+      --vino-hover: #7d1c3a;
       --blanco: #ffffff;
       --gold: #ffa502;
-      --morado-clase: #9b59b6;
+      --morado-clase: #62152d;
     }
 
     * { box-sizing: border-box; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8eff2;
-      color: var(--plomo-oscuro);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200; /* ExtraLight */
+      background-color: var(--oscuro-principal);
+      color: #f1f2f6;
       margin: 0;
       padding: 10px;
       position: relative;
       min-height: 100vh;
     }
 
-    /* Imagen de fondo romántica visible y fija al hacer scroll */
     body::before {
       content: "";
       position: fixed;
@@ -41,7 +43,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: min(320px, 80vw);
-      opacity: 0.18; /* Mayor visibilidad */
+      opacity: 0.22;
       pointer-events: none;
       z-index: 0;
     }
@@ -49,31 +51,33 @@
     .container {
       max-width: 1000px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.85); /* Fondo translúcido para ver la foto */
-      backdrop-filter: blur(4px);
+      background: rgba(143, 138, 112, 0.92);
+      backdrop-filter: blur(6px);
       border-radius: 20px;
       padding: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       position: relative;
       z-index: 1;
       overflow-x: auto;
+      color: var(--oscuro-principal);
     }
 
     header {
       text-align: center;
-      border-bottom: 2px solid var(--plomo-claro);
+      border-bottom: 2px solid rgba(42, 0, 0, 0.2);
       padding-bottom: 15px;
       margin-bottom: 15px;
     }
 
     header h1 {
       font-family: 'Montserrat', sans-serif;
-      font-weight: 900;
+      font-weight: 300;
       font-size: 2rem;
       letter-spacing: -0.5px;
-      color: var(--rosado);
+      color: var(--vino-borbona);
       margin: 0;
       text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.3);
     }
 
     .time-zones {
@@ -81,17 +85,18 @@
       justify-content: center;
       gap: 10px;
       font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--plomo-medio);
+      font-weight: 300;
+      color: var(--oscuro-principal);
       margin-top: 8px;
       flex-wrap: wrap;
     }
     
     .time-badge {
-      background: rgba(241, 242, 246, 0.9);
+      background: rgba(255, 255, 255, 0.85);
       padding: 6px 14px;
       border-radius: 20px;
-      border: 1px solid #dfe4ea;
+      border: 1px solid var(--marron-calido);
+      color: var(--oscuro-principal);
     }
 
     .view-selector {
@@ -103,21 +108,22 @@
     }
 
     .btn-view {
-      background: var(--plomo-claro);
-      border: 1px solid #dfe4ea;
-      color: var(--plomo-oscuro);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--marron-calido);
+      color: var(--oscuro-principal);
       padding: 8px 14px;
       border-radius: 20px;
-      font-weight: 600;
       font-size: 0.82rem;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .btn-view.active, .btn-view:hover {
-      background: var(--rosado);
+      background: var(--vino-borbona);
       color: var(--blanco);
-      border-color: var(--rosado);
+      border-color: var(--vino-borbona);
     }
 
     .nav-controls {
@@ -128,25 +134,30 @@
     }
 
     .btn-action {
-      background: var(--rosado);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--vino-borbona);
       color: var(--blanco);
       border: none;
       padding: 8px 16px;
       border-radius: 25px;
-      font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+      box-shadow: 0 4px 10px rgba(98, 21, 45, 0.4);
       transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background: var(--vino-hover);
     }
 
     #periodTitle {
       font-size: 1rem;
-      font-weight: 700;
-      color: var(--plomo-oscuro);
+      font-weight: 400;
+      color: var(--oscuro-principal);
       text-align: center;
     }
 
-    /* VISTA MENSUAL */
+    /* GRIDS DE MES Y SEMANA */
     .month-grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(42px, 1fr));
@@ -154,55 +165,63 @@
       width: 100%;
     }
 
-    .month-header-day {
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(42px, 1fr));
+      gap: 6px;
+      width: 100%;
+    }
+
+    .grid-header-day {
       text-align: center;
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: var(--plomo-medio);
+      font-weight: 400;
+      font-size: 0.78rem;
+      color: var(--oscuro-principal);
       padding: 4px 0;
     }
 
-    .month-cell {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--plomo-claro);
+    .calendar-cell {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--marron-calido);
       border-radius: 10px;
-      min-height: 85px;
-      padding: 4px;
+      min-height: 90px;
+      padding: 5px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, transform 0.1s;
+      color: var(--oscuro-principal);
     }
 
-    .month-cell:hover {
-      border-color: var(--rosado);
+    .calendar-cell:hover {
+      border-color: var(--vino-borbona);
+      transform: translateY(-2px);
     }
 
-    .month-cell.other-month {
-      background: rgba(250, 250, 250, 0.4);
+    .calendar-cell.other-month {
+      background: rgba(255, 255, 255, 0.3);
       opacity: 0.4;
     }
 
-    .month-cell-header {
+    .cell-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.78rem;
-      font-weight: 700;
+      font-weight: 400;
     }
 
-    .month-cell.anniversary {
+    .calendar-cell.anniversary {
       border: 2px solid var(--gold);
       background: #fffdf5;
     }
 
-    /* Tags de Turnos y Clases */
     .shift-mini-tag {
       font-size: 0.62rem;
       padding: 2px 3px;
       border-radius: 5px;
-      font-weight: 600;
+      font-weight: 300;
       margin-top: 2px;
       text-align: center;
       display: block;
@@ -215,19 +234,19 @@
       font-size: 0.6rem;
       padding: 2px 3px;
       border-radius: 5px;
-      font-weight: 600;
+      font-weight: 300;
       margin-top: 2px;
       text-align: center;
       display: block;
-      background: var(--morado-clase);
+      background: var(--vino-borbona);
       color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .shift-day { background: #eccc68; color: #2f3542; }
-    .shift-night { background: #3742fa; color: #ffffff; }
+    .shift-day { background: #eccc68; color: #2a0000; }
+    .shift-night { background: var(--oscuro-principal); color: #ffffff; }
     .shift-rest { background: #2ed573; color: #ffffff; }
 
     .plan-dots {
@@ -243,19 +262,13 @@
       border-radius: 50%;
     }
 
-    .dot.yeider { background-color: var(--plomo-oscuro); }
-    .dot.nataly { background-color: var(--rosado); }
+    .dot.yeider { background-color: var(--oscuro-principal); }
+    .dot.nataly { background-color: var(--vino-borbona); }
 
-    /* Estilos Semanal y Día a Día */
-    .week-container {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
+    /* ESTILOS VISTA DIA A DIA */
     .day-card {
       background: rgba(255, 255, 255, 0.95);
-      border: 2px solid var(--plomo-claro);
+      border: 2px solid var(--marron-calido);
       border-radius: 16px;
       overflow: hidden;
     }
@@ -266,25 +279,25 @@
     }
 
     .day-header {
-      background: var(--plomo-oscuro);
+      background: var(--oscuro-principal);
       color: var(--blanco);
       padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: 600;
+      font-weight: 300;
       font-size: 0.85rem;
     }
 
     .day-header.anniversary-header {
-      background: linear-gradient(45deg, #ffa502, #ff6b81);
+      background: linear-gradient(45deg, #ffa502, #62152d);
     }
 
     .shift-tag {
       font-size: 0.72rem;
       padding: 3px 8px;
       border-radius: 10px;
-      font-weight: 600;
+      font-weight: 300;
     }
 
     .day-columns {
@@ -299,14 +312,14 @@
     .person-header {
       text-align: center;
       font-size: 0.9rem;
-      font-weight: 700;
+      font-weight: 400;
       padding-bottom: 6px;
-      border-bottom: 2px dashed var(--plomo-claro);
+      border-bottom: 2px dashed var(--oliva-suave);
       margin-bottom: 8px;
     }
 
-    .person-header.yeider { color: var(--plomo-oscuro); }
-    .person-header.nataly { color: var(--rosado); }
+    .person-header.yeider { color: var(--oscuro-principal); }
+    .person-header.nataly { color: var(--vino-borbona); }
 
     .day-by-day-controls {
       display: flex;
@@ -323,20 +336,22 @@
     }
 
     .day-pill {
-      background: var(--plomo-claro);
-      border: 1px solid #dfe4ea;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--marron-calido);
       padding: 6px 12px;
       border-radius: 12px;
       font-size: 0.8rem;
-      font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
+      color: var(--oscuro-principal);
     }
 
     .day-pill.active {
-      background: var(--rosado);
+      background: var(--vino-borbona);
       color: var(--blanco);
-      border-color: var(--rosado);
+      border-color: var(--vino-borbona);
     }
 
     .person-filter-bar {
@@ -346,17 +361,19 @@
     }
 
     .filter-btn {
-      background: var(--plomo-claro);
-      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--marron-calido);
       padding: 5px 12px;
       border-radius: 10px;
       font-size: 0.78rem;
-      font-weight: 600;
       cursor: pointer;
+      color: var(--oscuro-principal);
     }
 
     .filter-btn.active {
-      background: var(--plomo-oscuro);
+      background: var(--oscuro-principal);
       color: var(--blanco);
     }
 
@@ -365,16 +382,16 @@
       flex-direction: column;
       gap: 4px;
       margin-bottom: 6px;
-      background: rgba(250, 250, 250, 0.9);
+      background: rgba(255, 255, 255, 0.85);
       padding: 6px;
       border-radius: 8px;
-      border-left: 3px solid var(--plomo-medio);
+      border-left: 3px solid var(--marron-calido);
     }
 
     .hour-time {
       font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--plomo-medio);
+      font-weight: 400;
+      color: var(--marron-calido);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -382,19 +399,21 @@
 
     .hour-time .sec-time {
       font-size: 0.68rem;
-      font-weight: 500;
-      color: #a4b0be;
+      font-weight: 200;
+      color: var(--oscuro-principal);
+      opacity: 0.7;
     }
 
     .plan-item {
       background: var(--blanco);
-      border: 1px solid #e0e0e0;
+      border: 1px solid var(--marron-calido);
       padding: 5px 7px;
       border-radius: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.8rem;
+      color: var(--oscuro-principal);
     }
 
     .plan-item.completed {
@@ -419,29 +438,35 @@
     }
 
     .add-btn-slot {
-      background: var(--plomo-claro);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--oliva-suave);
       border: none;
       width: 100%;
       padding: 4px;
       border-radius: 6px;
-      color: var(--plomo-oscuro);
+      color: var(--blanco);
       font-size: 0.72rem;
-      font-weight: 600;
       cursor: pointer;
+    }
+
+    .add-btn-slot:hover {
+      background: var(--marron-calido);
     }
 
     .postponed-section {
       margin-top: 25px;
-      background: rgba(255, 248, 249, 0.9);
-      border: 2px dashed var(--rosado);
+      background: rgba(255, 255, 255, 0.85);
+      border: 2px dashed var(--vino-borbona);
       border-radius: 16px;
       padding: 12px;
     }
 
     .postponed-section h3 {
       margin-top: 0;
-      color: var(--rosado);
+      color: var(--vino-borbona);
       font-size: 0.95rem;
+      font-weight: 300;
     }
 
     .postponed-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
@@ -454,13 +479,15 @@
       justify-content: space-between;
       align-items: center;
       font-size: 0.82rem;
+      color: var(--oscuro-principal);
+      border: 1px solid var(--oliva-suave);
     }
 
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(42, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -473,24 +500,27 @@
       border-radius: 16px;
       width: 100%;
       max-width: 380px;
+      color: var(--oscuro-principal);
     }
 
     .modal-content input, .modal-content select {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
       width: 100%;
       padding: 8px;
       margin-bottom: 10px;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--marron-calido);
       font-size: 0.85rem;
     }
 
     .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
-    .btn-save-modal { background: var(--rosado); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-    .btn-cancel-modal { background: var(--plomo-claro); color: var(--plomo-oscuro); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+    .btn-save-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--vino-borbona); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+    .btn-cancel-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--oliva-suave); color: var(--blanco); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
 
     @media (max-width: 600px) {
       .day-columns { grid-template-columns: 1fr; }
-      .person-column { border-bottom: 2px solid var(--plomo-claro); }
+      .person-column { border-bottom: 2px solid var(--oliva-suave); }
     }
   </style>
 </head>
@@ -509,7 +539,7 @@
       <button class="btn-view" onclick="switchView('month')">📅 Mes Completo</button>
       <button class="btn-view active" onclick="switchView('week')">📆 Semanal</button>
       <button class="btn-view" onclick="switchView('day')">☀️ Día a Día</button>
-      <button class="btn-view" onclick="requestNotificationPermission()" style="background:#2ed573; color:white; border:none;">🔔 Alertas</button>
+      <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--vino-borbona); color:white; border:none;">🔔 Alertas</button>
     </div>
 
     <div class="nav-controls">
@@ -519,13 +549,13 @@
     </div>
 
     <div id="monthContainer" style="display: none;"></div>
-    <div id="weekContainer" class="week-container"></div>
+    <div id="weekContainer" style="display: none;"></div>
     <div id="dayContainer" style="display: none;"></div>
 
     <div class="postponed-section">
       <h3>📌 Planes Pendientes / Aplazados</h3>
       <ul id="postponedList" class="postponed-list">
-        <li style="color: var(--plomo-medio); font-size: 0.82rem;">No hay planes acumulados.</li>
+        <li style="color: var(--marron-calido); font-size: 0.82rem;">No hay planes acumulados.</li>
       </ul>
     </div>
   </div>
@@ -535,16 +565,15 @@
       <h3 id="modalTitle">Nuevo Plan</h3>
       <input type="text" id="planTextInput" placeholder="Ej: Pago de arriendo, Salida...">
       
-      <label style="font-size: 0.78rem; font-weight:600; color:var(--plomo-medio);">Repetición:</label>
+      <label style="font-size: 0.78rem; font-weight:300; color:var(--marron-calido);">Repetición:</label>
       <select id="planRecurrence">
         <option value="none">Única vez</option>
         <option value="daily">Todos los días</option>
         <option value="weekly">Todas las semanas</option>
         <option value="monthly">Todos los meses (Ej. día 4)</option>
-        <option value="nataly_classes">Clases Nataly (Mar / Jue / Sáb)</option>
       </select>
 
-      <label style="font-size: 0.78rem; font-weight:600; color:var(--plomo-medio);">Antelación de Alerta:</label>
+      <label style="font-size: 0.78rem; font-weight:300; color:var(--marron-calido);">Antelación de Alerta:</label>
       <select id="planAdvanceNotice">
         <option value="0">En el momento exacto</option>
         <option value="15">15 minutos antes</option>
@@ -686,7 +715,10 @@
     function switchView(view) {
       currentView = view;
       document.querySelectorAll('.btn-view').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      const buttons = document.querySelectorAll('.btn-view');
+      if(view === 'month') buttons[0].classList.add('active');
+      if(view === 'week') buttons[1].classList.add('active');
+      if(view === 'day') buttons[2].classList.add('active');
       renderCurrentView();
     }
 
@@ -710,7 +742,7 @@
         document.getElementById('monthContainer').style.display = 'grid';
         renderMonth();
       } else if (currentView === 'week') {
-        document.getElementById('weekContainer').style.display = 'flex';
+        document.getElementById('weekContainer').style.display = 'grid';
         renderWeek();
       } else if (currentView === 'day') {
         document.getElementById('dayContainer').style.display = 'block';
@@ -731,7 +763,7 @@
       const headers = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
       headers.forEach(h => {
         const div = document.createElement('div');
-        div.className = 'month-header-day';
+        div.className = 'grid-header-day';
         div.innerText = h;
         container.appendChild(div);
       });
@@ -743,8 +775,8 @@
 
       for (let i = offset - 1; i >= 0; i--) {
         const cell = document.createElement('div');
-        cell.className = 'month-cell other-month';
-        cell.innerHTML = `<div class="month-cell-header"><span>${prevTotalDays - i}</span></div>`;
+        cell.className = 'calendar-cell other-month';
+        cell.innerHTML = `<div class="cell-header"><span>${prevTotalDays - i}</span></div>`;
         container.appendChild(cell);
       }
 
@@ -758,7 +790,7 @@
         const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
 
         const cell = document.createElement('div');
-        cell.className = `month-cell ${isAnniversary ? 'anniversary' : ''}`;
+        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''}`;
         cell.onclick = () => { selectedDayDate = dateObj; switchView('day'); };
 
         let dotsHTML = '<div class="plan-dots">';
@@ -768,7 +800,7 @@
         dotsHTML += '</div>';
 
         cell.innerHTML = `
-          <div class="month-cell-header">
+          <div class="cell-header">
             <span>${d} ${isAnniversary ? '💖' : ''}</span>
           </div>
           <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
@@ -781,6 +813,7 @@
 
     function renderWeek() {
       const container = document.getElementById('weekContainer');
+      container.className = 'week-grid';
       container.innerHTML = '';
 
       const endOfWeek = new Date(currentStartOfWeek);
@@ -789,7 +822,13 @@
       document.getElementById('periodTitle').innerText = 
         `${currentStartOfWeek.getDate()} ${getMonthName(currentStartOfWeek.getMonth())} - ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())} ${endOfWeek.getFullYear()}`;
 
-      const diffHours = getTimeDifferenceHours();
+      const headers = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+      headers.forEach(h => {
+        const div = document.createElement('div');
+        div.className = 'grid-header-day';
+        div.innerText = h;
+        container.appendChild(div);
+      });
 
       for (let i = 0; i < 7; i++) {
         const dayDate = new Date(currentStartOfWeek);
@@ -799,37 +838,29 @@
         const dayNum = dayDate.getDate();
         const isAnniversary = (dayNum === 20);
         const shiftInfo = getYeiderShift(dayDate);
+        const dayPlans = getPlansForDate(dateStr);
         const dayOfWeek = dayDate.getDay();
         const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
 
-        const dayCard = document.createElement('div');
-        dayCard.className = `day-card ${isAnniversary ? 'anniversary' : ''}`;
+        const cell = document.createElement('div');
+        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''}`;
+        cell.onclick = () => { selectedDayDate = dayDate; switchView('day'); };
 
-        let headerHTML = `
-          <div class="day-header ${isAnniversary ? 'anniversary-header' : ''}">
-            <span>${dayNames[i]} ${dayNum} de ${getMonthName(dayDate.getMonth())} ${isAnniversary ? '💖 ANIVERSARIO 🎉' : ''}</span>
-            <div>
-              <span class="shift-tag ${shiftInfo.class}">Yeider: ${shiftInfo.text}</span>
-              ${isNatalyClassDay ? '<span class="shift-tag" style="background:#9b59b6; color:white;">Clase Nata 📚</span>' : ''}
-            </div>
+        let dotsHTML = '<div class="plan-dots">';
+        dayPlans.forEach(p => {
+          dotsHTML += `<div class="dot ${p.person}" title="${p.text}"></div>`;
+        });
+        dotsHTML += '</div>';
+
+        cell.innerHTML = `
+          <div class="cell-header">
+            <span>${dayNum} ${isAnniversary ? '💖' : ''}</span>
           </div>
+          <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
+          ${isNatalyClassDay ? '<span class="class-mini-tag">Clase Nata 📚</span>' : ''}
+          ${dotsHTML}
         `;
-
-        let columnsHTML = `
-          <div class="day-columns">
-            <div class="person-column">
-              <div class="person-header yeider"><span>👦 YEIDER</span></div>
-              ${renderHourSlots(dateStr, 'yeider', diffHours)}
-            </div>
-            <div class="person-column">
-              <div class="person-header nataly"><span>👧 NATALY</span></div>
-              ${renderHourSlots(dateStr, 'nataly', diffHours)}
-            </div>
-          </div>
-        `;
-
-        dayCard.innerHTML = headerHTML + columnsHTML;
-        container.appendChild(dayCard);
+        container.appendChild(cell);
       }
     }
 
@@ -872,7 +903,7 @@
           <span>${dayNames[(selectedDayDate.getDay()+6)%7]} ${selectedDayDate.getDate()} ${isAnniversary ? '💖 ANIVERSARIO 🎉' : ''}</span>
           <div>
             <span class="shift-tag ${shiftInfo.class}">Yeider: ${shiftInfo.text}</span>
-            ${isNatalyClassDay ? '<span class="shift-tag" style="background:#9b59b6; color:white;">Clase Nata 📚</span>' : ''}
+            ${isNatalyClassDay ? '<span class="shift-tag" style="background:var(--vino-borbona); color:white;">Clase Nata 📚 (7pm-10pm BO)</span>' : ''}
           </div>
         </div>
       `;
@@ -943,7 +974,7 @@
               <button class="btn-icon" title="Completado" onclick="setPlanStatus('${p.key}', 'completed')">✔</button>
               <button class="btn-icon" title="Incompletado" onclick="setPlanStatus('${p.key}', 'failed')">❌</button>
               <button class="btn-icon" title="Aplazar" onclick="postponePlan('${p.key}', '${p.text}')">📌</button>
-              <button class="btn-icon" title="Eliminar" onclick="deletePlan('${p.key}')">🗑️</button>
+              ${p.isDefaultClass ? '' : `<button class="btn-icon" title="Eliminar" onclick="deletePlan('${p.key}')">🗑️</button>`}
             </div>
           </div>
         `).join('');
@@ -963,6 +994,22 @@
 
     function getPlansForSlot(dateStr, person, hour) {
       const result = [];
+      const d = new Date(dateStr + 'T00:00:00');
+      const dayOfWeek = d.getDay();
+
+      if (person === 'nataly' && (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6)) {
+        if (hour === '19:00' || hour === '20:00' || hour === '21:00') {
+          result.push({
+            key: `class_default_${dateStr}_${hour}`,
+            text: 'Clase Nataly 📚',
+            person: 'nataly',
+            hour: hour,
+            status: 'pending',
+            isDefaultClass: true
+          });
+        }
+      }
+
       Object.keys(allPlans).forEach(key => {
         const item = allPlans[key];
         if (item.person === person && item.hour === hour && matchesRecurrence(item, dateStr)) {
@@ -974,6 +1021,13 @@
 
     function getPlansForDate(dateStr) {
       const result = [];
+      const d = new Date(dateStr + 'T00:00:00');
+      const dayOfWeek = d.getDay();
+
+      if (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6) {
+        result.push({ person: 'nataly', text: 'Clase Nataly 📚' });
+      }
+
       Object.keys(allPlans).forEach(key => {
         const item = allPlans[key];
         if (matchesRecurrence(item, dateStr)) {
@@ -1000,9 +1054,6 @@
         return diffDays >= 0 && diffDays % 7 === 0;
       } else if (item.recurrence === 'monthly') {
         return targetDate.getDate() === itemDate.getDate();
-      } else if (item.recurrence === 'nataly_classes') {
-        const dayOfWeek = targetDate.getDay();
-        return dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6;
       }
       return false;
     }
@@ -1013,7 +1064,7 @@
       const keys = Object.keys(allPostponed);
 
       if (keys.length === 0) {
-        list.innerHTML = '<li style="color: var(--plomo-medio); font-size: 0.82rem;">No hay planes acumulados.</li>';
+        list.innerHTML = '<li style="color: var(--marron-calido); font-size: 0.82rem;">No hay planes acumulados.</li>';
         return;
       }
 
@@ -1063,16 +1114,20 @@
     }
 
     function setPlanStatus(key, status) {
+      if (key.startsWith('class_default_')) return;
       plansRef.child(key).update({ status });
     }
 
     function deletePlan(key) {
+      if (key.startsWith('class_default_')) return;
       plansRef.child(key).remove();
     }
 
     function postponePlan(key, text) {
       postponedRef.push({ text });
-      plansRef.child(key).remove();
+      if (!key.startsWith('class_default_')) {
+        plansRef.child(key).remove();
+      }
     }
 
     function deletePostponed(key) {
