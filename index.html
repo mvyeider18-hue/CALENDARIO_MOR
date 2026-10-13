@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendario YEIDER & NATALY ❤️</title>
   <link rel="manifest" href="./manifest.json">
-<!-- Icono personalizado para la app -->
-<link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/SPBevo4.png">
-<link rel="apple-touch-icon" href="https://i.imgur.com/SPBevo4.png">
+  <!-- Icono personalizado para la app -->
+  <link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/SPBevo4.png">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/SPBevo4.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -37,6 +37,27 @@
       border-radius: 20px;
       padding: 15px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fondo de agua romántico */
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://i.imgur.com/SPBevo4.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 50%;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container > * {
+      position: relative;
+      z-index: 1;
     }
 
     header {
@@ -74,6 +95,33 @@
       border: 1px solid #dfe4ea;
     }
 
+    /* Barra de Selector de Vistas */
+    .view-selector {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-view {
+      background: var(--plomo-claro);
+      border: 1px solid #dfe4ea;
+      color: var(--plomo-oscuro);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-view.active, .btn-view:hover {
+      background: var(--rosado);
+      color: var(--blanco);
+      border-color: var(--rosado);
+    }
+
     /* Navigation Controls */
     .nav-controls {
       display: flex;
@@ -100,16 +148,79 @@
       box-shadow: 0 6px 14px rgba(255, 107, 129, 0.4);
     }
 
-    .btn-action:active {
-      transform: translateY(0);
-    }
-
-    #weekTitle {
+    #periodTitle {
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--plomo-oscuro);
       text-align: center;
     }
+
+    /* VISTA MENSUAL (Grid de Calendario) */
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .month-header-day {
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--plomo-medio);
+      padding: 5px 0;
+    }
+
+    .month-cell {
+      background: var(--blanco);
+      border: 1px solid var(--plomo-claro);
+      border-radius: 10px;
+      min-height: 80px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .month-cell:hover {
+      border-color: var(--rosado);
+    }
+
+    .month-cell.other-month {
+      background: #fafafa;
+      opacity: 0.4;
+    }
+
+    .month-cell-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .month-cell.anniversary {
+      border: 2px solid var(--gold);
+      background: #fffdf5;
+    }
+
+    .plan-dots {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--rosado);
+      border-radius: 50%;
+    }
+
+    .dot.yeider { background-color: var(--plomo-oscuro); }
+    .dot.nataly { background-color: var(--rosado); }
 
     /* Days List (Weekly Layout) */
     .week-container {
@@ -164,7 +275,6 @@
     .day-columns {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      divide-x: 2px solid var(--plomo-claro);
     }
 
     .person-column {
@@ -186,6 +296,60 @@
 
     .person-header.yeider { color: var(--plomo-oscuro); }
     .person-header.nataly { color: var(--rosado); }
+
+    /* VISTA DIA A DIA */
+    .day-by-day-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .days-slider {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .day-pill {
+      background: var(--plomo-claro);
+      border: 1px solid #dfe4ea;
+      padding: 8px 14px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .day-pill.active {
+      background: var(--rosado);
+      color: var(--blanco);
+      border-color: var(--rosado);
+    }
+
+    .person-filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: var(--plomo-claro);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: var(--plomo-oscuro);
+      color: var(--blanco);
+    }
 
     /* Hourly slot */
     .hour-slot {
@@ -338,7 +502,7 @@
 
     .modal-content h3 { margin-top: 0; color: var(--plomo-oscuro); }
 
-    .modal-content input {
+    .modal-content input, .modal-content select {
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
@@ -373,14 +537,24 @@
       </div>
     </header>
 
-    <div class="nav-controls">
-      <button class="btn-action" onclick="changeWeek(-1)">❮ Sem. Anterior</button>
-      <div id="weekTitle">Cargando semana...</div>
-      <button class="btn-action" onclick="changeWeek(1)">Sem. Siguiente ❯</button>
+    <!-- Barra de Selección de Vista -->
+    <div class="view-selector">
+      <button class="btn-view" onclick="switchView('month')">📅 Mes Completo</button>
+      <button class="btn-view active" onclick="switchView('week')">📆 Semanal</button>
+      <button class="btn-view" onclick="switchView('day')">☀️ Día a Día</button>
+      <button class="btn-view" onclick="requestNotificationPermission()" style="background:#2ed573; color:white; border:none;">🔔 Activar Alertas</button>
     </div>
 
-    <!-- Contenedor Semanal Dinámico -->
+    <div class="nav-controls">
+      <button class="btn-action" onclick="changePeriod(-1)">❮ Anterior</button>
+      <div id="periodTitle">Cargando...</div>
+      <button class="btn-action" onclick="changePeriod(1)">Siguiente ❯</button>
+    </div>
+
+    <!-- Contenedores de Vistas Dinámicas -->
+    <div id="monthContainer" style="display: none;"></div>
     <div id="weekContainer" class="week-container"></div>
+    <div id="dayContainer" style="display: none;"></div>
 
     <!-- Sección de Planes Postergados -->
     <div class="postponed-section">
@@ -395,8 +569,16 @@
   <div class="modal" id="planModal">
     <div class="modal-content">
       <h3 id="modalTitle">Nuevo Plan</h3>
-      <input type="text" id="planTextInput" placeholder="Ej: Salida a cenar, Videollamada...">
+      <input type="text" id="planTextInput" placeholder="Ej: Pago de arriendo, Salida a cenar...">
       
+      <label style="font-size: 0.8rem; font-weight:600; color:var(--plomo-medio); display:block; margin-bottom:4px;">Repetir plan:</label>
+      <select id="planRecurrence">
+        <option value="none">Única vez</option>
+        <option value="daily">Todos los días</option>
+        <option value="weekly">Todas las semanas</option>
+        <option value="monthly">Todos los meses (ej. día 4)</option>
+      </select>
+
       <div class="modal-buttons">
         <button class="btn-cancel-modal" onclick="closeModal()">Cancelar</button>
         <button class="btn-save-modal" onclick="savePlan()">Guardar Plan 💾</button>
@@ -425,7 +607,12 @@
     const plansRef = database.ref('planes_v2');
     const postponedRef = database.ref('postergados_v2');
 
+    let currentView = 'week'; // 'month', 'week', 'day'
     let currentStartOfWeek = getMonday(new Date());
+    let currentMonthDate = new Date();
+    let selectedDayDate = new Date();
+    let selectedPersonFilter = 'all'; // 'all', 'yeider', 'nataly'
+    
     let allPlans = {};
     let allPostponed = {};
     let activeSlotInfo = null;
@@ -443,11 +630,44 @@
       const now = new Date();
       document.getElementById('timeChile').innerText = now.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit' });
       document.getElementById('timeBolivia').innerText = now.toLocaleTimeString('es-BO', { timeZone: 'America/La_Paz', hour: '2-digit', minute: '2-digit' });
+      checkNotifications(now);
     }
     setInterval(updateClocks, 1000);
     updateClocks();
 
-    // Obtener diferencia horaria entre Chile y Bolivia
+    // Sistema de Notificaciones Web Push
+    function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        alert("Este navegador no soporta notificaciones de escritorio.");
+        return;
+      }
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          alert("¡Notificaciones activadas correctamente! Te avisaremos antes de tus planes.");
+        } else {
+          alert("Has denegado las notificaciones.");
+        }
+      });
+    }
+
+    function checkNotifications(now) {
+      if (Notification.permission !== "granted") return;
+      const currentHourStr = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+      const todayStr = formatDate(now);
+
+      Object.keys(allPlans).forEach(key => {
+        const p = allPlans[key];
+        if (p.date === todayStr && p.hour === currentHourStr && !p.notified && p.status === 'pending') {
+          new Notification("❤️ Recordatorio de Plan", {
+            body: `Tienes programado: "${p.text}" (${p.person.toUpperCase()}) a las ${p.hour}`,
+            icon: "https://i.imgur.com/SPBevo4.png"
+          });
+          plansRef.child(key).update({ notified: true });
+        }
+      });
+    }
+
+    // Diferencia horaria Chile - Bolivia
     function getTimeDifferenceHours() {
       const now = new Date();
       const chileStr = now.toLocaleString('en-US', { timeZone: 'America/Santiago' });
@@ -470,12 +690,11 @@
       return new Date(d.setDate(diff));
     }
 
-    // Calculador de Turno 7x7 Yeider
+    // Calculador Turno 7x7 Yeider
     function getYeiderShift(dateObj) {
       const baseDate = new Date(2026, 9, 6);
       const diffTime = dateObj.getTime() - baseDate.getTime();
       const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
-      
       let cycleDay = (diffDays % 28 + 28) % 28;
 
       if (cycleDay >= 0 && cycleDay < 7) {
@@ -491,7 +710,7 @@
 
     plansRef.on('value', (snapshot) => {
       allPlans = snapshot.val() || {};
-      renderWeek();
+      renderCurrentView();
     });
 
     postponedRef.on('value', (snapshot) => {
@@ -499,11 +718,102 @@
       renderPostponed();
     });
 
-    function changeWeek(direction) {
-      currentStartOfWeek.setDate(currentStartOfWeek.getDate() + (direction * 7));
-      renderWeek();
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.btn-view').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderCurrentView();
     }
 
+    function changePeriod(direction) {
+      if (currentView === 'month') {
+        currentMonthDate.setMonth(currentMonthDate.getMonth() + direction);
+      } else if (currentView === 'week') {
+        currentStartOfWeek.setDate(currentStartOfWeek.getDate() + (direction * 7));
+      } else if (currentView === 'day') {
+        selectedDayDate.setDate(selectedDayDate.getDate() + direction);
+      }
+      renderCurrentView();
+    }
+
+    function renderCurrentView() {
+      document.getElementById('monthContainer').style.display = 'none';
+      document.getElementById('weekContainer').style.display = 'none';
+      document.getElementById('dayContainer').style.display = 'none';
+
+      if (currentView === 'month') {
+        document.getElementById('monthContainer').style.display = 'grid';
+        renderMonth();
+      } else if (currentView === 'week') {
+        document.getElementById('weekContainer').style.display = 'flex';
+        renderWeek();
+      } else if (currentView === 'day') {
+        document.getElementById('dayContainer').style.display = 'block';
+        renderDayByDay();
+      }
+    }
+
+    // --- RENDERIZADO VISTA MENSUAL ---
+    function renderMonth() {
+      const container = document.getElementById('monthContainer');
+      container.className = 'month-grid';
+      container.innerHTML = '';
+
+      const year = currentMonthDate.getFullYear();
+      const month = currentMonthDate.getMonth();
+
+      document.getElementById('periodTitle').innerText = `${getMonthName(month).toUpperCase()} ${year}`;
+
+      // Cabeceras de días de la semana
+      const headers = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+      headers.forEach(h => {
+        const div = document.createElement('div');
+        div.className = 'month-header-day';
+        div.innerText = h;
+        container.appendChild(div);
+      });
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const offset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+      const totalDays = new Date(year, month + 1, 0).getDate();
+      const prevTotalDays = new Date(year, month, 0).getDate();
+
+      // Días mes anterior
+      for (let i = offset - 1; i >= 0; i--) {
+        const cell = document.createElement('div');
+        cell.className = 'month-cell other-month';
+        cell.innerHTML = `<div class="month-cell-header"><span>${prevTotalDays - i}</span></div>`;
+        container.appendChild(cell);
+      }
+
+      // Días del mes actual
+      for (let d = 1; d <= totalDays; d++) {
+        const dateObj = new Date(year, month, d);
+        const dateStr = formatDate(dateObj);
+        const isAnniversary = (d === 20);
+        const dayPlans = getPlansForDate(dateStr);
+
+        const cell = document.createElement('div');
+        cell.className = `month-cell ${isAnniversary ? 'anniversary' : ''}`;
+        cell.onclick = () => { selectedDayDate = dateObj; switchView('day'); document.querySelectorAll('.btn-view')[2].classList.add('active'); document.querySelectorAll('.btn-view')[1].classList.remove('active'); };
+
+        let dotsHTML = '<div class="plan-dots">';
+        dayPlans.forEach(p => {
+          dotsHTML += `<div class="dot ${p.person}"></div>`;
+        });
+        dotsHTML += '</div>';
+
+        cell.innerHTML = `
+          <div class="month-cell-header">
+            <span>${d} ${isAnniversary ? '💖' : ''}</span>
+          </div>
+          ${dotsHTML}
+        `;
+        container.appendChild(cell);
+      }
+    }
+
+    // --- RENDERIZADO VISTA SEMANAL ---
     function renderWeek() {
       const container = document.getElementById('weekContainer');
       container.innerHTML = '';
@@ -511,10 +821,10 @@
       const endOfWeek = new Date(currentStartOfWeek);
       endOfWeek.setDate(endOfWeek.getDate() + 6);
 
-      document.getElementById('weekTitle').innerText = 
+      document.getElementById('periodTitle').innerText = 
         `${currentStartOfWeek.getDate()} ${getMonthName(currentStartOfWeek.getMonth())} - ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())} ${endOfWeek.getFullYear()}`;
 
-      const diffHours = getTimeDifferenceHours(); // Diferencia Chile - Bolivia
+      const diffHours = getTimeDifferenceHours();
 
       for (let i = 0; i < 7; i++) {
         const dayDate = new Date(currentStartOfWeek);
@@ -537,19 +847,12 @@
 
         let columnsHTML = `
           <div class="day-columns">
-            <!-- Columna Yeider: Hora Chile principal (08:00), Hora Bolivia secundaria (07:00) -->
             <div class="person-column">
-              <div class="person-header yeider">
-                <span>👦 YEIDER</span>
-              </div>
+              <div class="person-header yeider"><span>👦 YEIDER</span></div>
               ${renderHourSlots(dateStr, 'yeider', diffHours)}
             </div>
-
-            <!-- Columna Nataly: Hora Bolivia principal (07:00), Hora Chile secundaria (08:00) -->
             <div class="person-column">
-              <div class="person-header nataly">
-                <span>👧 NATALY</span>
-              </div>
+              <div class="person-header nataly"><span>👧 NATALY</span></div>
               ${renderHourSlots(dateStr, 'nataly', diffHours)}
             </div>
           </div>
@@ -560,22 +863,100 @@
       }
     }
 
+    // --- RENDERIZADO VISTA DÍA A DÍA ---
+    function renderDayByDay() {
+      const container = document.getElementById('dayContainer');
+      container.innerHTML = '';
+
+      document.getElementById('periodTitle').innerText = `${dayNames[(selectedDayDate.getDay() + 6) % 7]} ${selectedDayDate.getDate()} de ${getMonthName(selectedDayDate.getMonth())} ${selectedDayDate.getFullYear()}`;
+
+      const diffHours = getTimeDifferenceHours();
+      const dateStr = formatDate(selectedDayDate);
+      const isAnniversary = (selectedDayDate.getDate() === 20);
+      const shiftInfo = getYeiderShift(selectedDayDate);
+
+      // Slider de días de la semana actual
+      let weekStart = getMonday(selectedDayDate);
+      let sliderHTML = '<div class="days-slider">';
+      for (let i = 0; i < 7; i++) {
+        let d = new Date(weekStart);
+        d.setDate(d.getDate() + i);
+        let activeClass = formatDate(d) === dateStr ? 'active' : '';
+        sliderHTML += `<div class="day-pill ${activeClass}" onclick="selectDayFromSlider('${formatDate(d)}')">${dayNames[i].substring(0,3)} ${d.getDate()}</div>`;
+      }
+      sliderHTML += '</div>';
+
+      // Filtros por persona
+      let filterHTML = `
+        <div class="person-filter-bar">
+          <button class="filter-btn ${selectedPersonFilter === 'all' ? 'active' : ''}" onclick="setPersonFilter('all')">Ambos</button>
+          <button class="filter-btn ${selectedPersonFilter === 'yeider' ? 'active' : ''}" onclick="setPersonFilter('yeider')">Yeider</button>
+          <button class="filter-btn ${selectedPersonFilter === 'nataly' ? 'active' : ''}" onclick="setPersonFilter('nataly')">Nataly</button>
+        </div>
+      `;
+
+      let dayCard = document.createElement('div');
+      dayCard.className = `day-card ${isAnniversary ? 'anniversary' : ''}`;
+      
+      let headerHTML = `
+        <div class="day-header ${isAnniversary ? 'anniversary-header' : ''}">
+          <span>${dayNames[(selectedDayDate.getDay()+6)%7]} ${selectedDayDate.getDate()} ${isAnniversary ? '💖 ¡ANIVERSARIO! 🎉' : ''}</span>
+          <span class="shift-tag ${shiftInfo.class}">Yeider: ${shiftInfo.text}</span>
+        </div>
+      `;
+
+      let columnsHTML = `<div class="day-columns" style="grid-template-columns: 1fr;">`;
+      if (selectedPersonFilter === 'all' || selectedPersonFilter === 'yeider') {
+        columnsHTML += `
+          <div class="person-column">
+            <div class="person-header yeider"><span>👦 YEIDER</span></div>
+            ${renderHourSlots(dateStr, 'yeider', diffHours)}
+          </div>
+        `;
+      }
+      if (selectedPersonFilter === 'all' || selectedPersonFilter === 'nataly') {
+        columnsHTML += `
+          <div class="person-column">
+            <div class="person-header nataly"><span>👧 NATALY</span></div>
+            ${renderHourSlots(dateStr, 'nataly', diffHours)}
+          </div>
+        `;
+      }
+      columnsHTML += `</div>`;
+
+      dayCard.innerHTML = headerHTML + columnsHTML;
+
+      let controlsWrapper = document.createElement('div');
+      controlsWrapper.className = 'day-by-day-controls';
+      controlsWrapper.innerHTML = sliderHTML + filterHTML;
+
+      container.appendChild(controlsWrapper);
+      container.appendChild(dayCard);
+    }
+
+    function selectDayFromSlider(dateStr) {
+      selectedDayDate = new Date(dateStr + 'T00:00:00');
+      renderDayByDay();
+    }
+
+    function setPersonFilter(person) {
+      selectedPersonFilter = person;
+      renderDayByDay();
+    }
+
     function renderHourSlots(dateStr, person, diffHours) {
       return chileBaseHours.map(chileHour => {
         let primaryTimeText = "";
         let secondaryTimeText = "";
         let slotHourKey = "";
 
-        // Hora equivalente de Bolivia para esa misma fila
         const boHour = formatHourOffset(chileHour, -diffHours);
 
         if (person === 'yeider') {
-          // Yeider: Principal = Chile 08:00 | Secundaria = Bolivia 07:00
           primaryTimeText = `CL ${chileHour}`;
           secondaryTimeText = `(BO ${boHour})`;
           slotHourKey = chileHour;
         } else {
-          // Nataly: Principal = Bolivia 07:00 | Secundaria = Chile 08:00
           primaryTimeText = `BO ${boHour}`;
           secondaryTimeText = `(CL ${chileHour})`;
           slotHourKey = boHour;
@@ -585,11 +966,11 @@
         
         const plansHTML = plans.map(p => `
           <div class="plan-item ${p.status || ''}">
-            <span>${p.text}</span>
+            <span>${p.text} ${p.recurrence && p.recurrence !== 'none' ? '🔁' : ''}</span>
             <div class="plan-actions">
               <button class="btn-icon" title="Completado" onclick="setPlanStatus('${p.key}', 'completed')">✔</button>
-              <button class="btn-icon" title="Incompletado (F)" onclick="setPlanStatus('${p.key}', 'failed')">❌</button>
-              <button class="btn-icon" title="Aplazar a lista sin fecha" onclick="postponePlan('${p.key}', '${p.text}')">📌</button>
+              <button class="btn-icon" title="Incompletado" onclick="setPlanStatus('${p.key}', 'failed')">❌</button>
+              <button class="btn-icon" title="Aplazar" onclick="postponePlan('${p.key}', '${p.text}')">📌</button>
               <button class="btn-icon" title="Eliminar" onclick="deletePlan('${p.key}')">🗑️</button>
             </div>
           </div>
@@ -612,11 +993,44 @@
       const result = [];
       Object.keys(allPlans).forEach(key => {
         const item = allPlans[key];
-        if (item.date === dateStr && item.person === person && item.hour === hour) {
+        if (item.person === person && item.hour === hour && matchesRecurrence(item, dateStr)) {
           result.push({ ...item, key });
         }
       });
       return result;
+    }
+
+    function getPlansForDate(dateStr) {
+      const result = [];
+      Object.keys(allPlans).forEach(key => {
+        const item = allPlans[key];
+        if (matchesRecurrence(item, dateStr)) {
+          result.push({ ...item, key });
+        }
+      });
+      return result;
+    }
+
+    // Validador inteligente de recurrencia (como Arriendo cada 4 de mes, diario o semanal)
+    function matchesRecurrence(item, targetDateStr) {
+      if (item.date === targetDateStr) return true;
+      if (!item.recurrence || item.recurrence === 'none') return false;
+
+      const itemDate = new Date(item.date + 'T00:00:00');
+      const targetDate = new Date(targetDateStr + 'T00:00:00');
+
+      if (targetDate < itemDate) return false;
+
+      if (item.recurrence === 'daily') {
+        return true;
+      } else if (item.recurrence === 'weekly') {
+        const diffTime = targetDate - itemDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays >= 0 && diffDays % 7 === 0;
+      } else if (item.recurrence === 'monthly') {
+        return targetDate.getDate() === itemDate.getDate();
+      }
+      return false;
     }
 
     function renderPostponed() {
@@ -645,6 +1059,7 @@
       activeSlotInfo = { date, person, hour };
       document.getElementById('modalTitle').innerText = `Plan para ${person.toUpperCase()} (${hour})`;
       document.getElementById('planTextInput').value = '';
+      document.getElementById('planRecurrence').value = 'none';
       document.getElementById('planModal').style.display = 'flex';
     }
 
@@ -654,6 +1069,7 @@
 
     function savePlan() {
       const text = document.getElementById('planTextInput').value.trim();
+      const recurrence = document.getElementById('planRecurrence').value;
       if (!text) return alert('Escribe un texto para el plan.');
 
       plansRef.push({
@@ -661,7 +1077,9 @@
         person: activeSlotInfo.person,
         hour: activeSlotInfo.hour,
         text: text,
-        status: 'pending'
+        recurrence: recurrence,
+        status: 'pending',
+        notified: false
       });
 
       closeModal();
