@@ -7,34 +7,37 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/SPBevo4.png">
   <link rel="apple-touch-icon" href="https://i.imgur.com/SPBevo4.png">
-  <!-- Carga de Montserrat con pesos ligeros (200 ExtraLight, 300 Light, 400 Regular) -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Tipografía Montserrat ExtraLight (pesos 200, 300, 400) estilo Canva -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --oscuro-principal: #2a0000;
-      --vino-borbona: #62152d;
-      --oliva-suave: #8f8a70;
-      --marron-calido: #5a4943;
-      
-      --vino-hover: #7d1c3a;
+      --fondo-body: #f5efe6;
+      --card-bg: #faf6f0;
+      --beige-mediano: #d8c8b8;
+      --cafe-suave: #8c6d58;
+      --cafe-tierra: #6f4e37;
+      --cafe-oscuro: #3e2723;
       --blanco: #ffffff;
-      --gold: #ffa502;
-      --morado-clase: #62152d;
+      --gold-hoy: #d4af37;
+      --aniversario: #b85b56;
+      --morado-clase: #7b5260;
     }
 
     * { box-sizing: border-box; }
 
     body {
       font-family: 'Montserrat', sans-serif;
-      font-weight: 200; /* ExtraLight */
-      background-color: var(--oscuro-principal);
-      color: #f1f2f6;
+      font-weight: 200;
+      background-color: var(--fondo-body);
+      color: var(--cafe-oscuro);
       margin: 0;
-      padding: 10px;
+      padding: 8px;
       position: relative;
       min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
     }
 
+    /* Imagen de fondo romántica visible e inmóvil al deslizar */
     body::before {
       content: "";
       position: fixed;
@@ -42,8 +45,8 @@
       background-image: url('https://i.imgur.com/SPBevo4.png');
       background-repeat: no-repeat;
       background-position: center;
-      background-size: min(320px, 80vw);
-      opacity: 0.22;
+      background-size: min(340px, 82vw);
+      opacity: 0.16;
       pointer-events: none;
       z-index: 0;
     }
@@ -51,157 +54,172 @@
     .container {
       max-width: 1000px;
       margin: 0 auto;
-      background: rgba(143, 138, 112, 0.92);
-      backdrop-filter: blur(6px);
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      background: rgba(250, 246, 240, 0.93);
+      backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 12px 32px rgba(62, 39, 35, 0.12);
       position: relative;
       z-index: 1;
       overflow-x: auto;
-      color: var(--oscuro-principal);
+      border: 1px solid var(--beige-mediano);
     }
 
     header {
       text-align: center;
-      border-bottom: 2px solid rgba(42, 0, 0, 0.2);
-      padding-bottom: 15px;
-      margin-bottom: 15px;
+      border-bottom: 1px solid var(--beige-mediano);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
     }
 
     header h1 {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      font-size: 2rem;
-      letter-spacing: -0.5px;
-      color: var(--vino-borbona);
+      font-size: 1.8rem;
+      letter-spacing: -0.3px;
+      color: var(--cafe-tierra);
       margin: 0;
       text-transform: uppercase;
-      text-shadow: 0 1px 2px rgba(255,255,255,0.3);
     }
 
     .time-zones {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      font-size: 0.85rem;
+      gap: 8px;
+      font-size: 0.8rem;
       font-weight: 300;
-      color: var(--oscuro-principal);
+      color: var(--cafe-tierra);
       margin-top: 8px;
       flex-wrap: wrap;
     }
     
     .time-badge {
-      background: rgba(255, 255, 255, 0.85);
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--marron-calido);
-      color: var(--oscuro-principal);
+      background: var(--blanco);
+      padding: 5px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--beige-mediano);
+      color: var(--cafe-oscuro);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
     }
 
     .view-selector {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 15px;
+      gap: 6px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
     }
 
     .btn-view {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid var(--marron-calido);
-      color: var(--oscuro-principal);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.82rem;
+      background: var(--blanco);
+      border: 1px solid var(--beige-mediano);
+      color: var(--cafe-oscuro);
+      padding: 7px 13px;
+      border-radius: 18px;
+      font-size: 0.8rem;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .btn-view.active, .btn-view:hover {
-      background: var(--vino-borbona);
+      background: var(--cafe-tierra);
       color: var(--blanco);
-      border-color: var(--vino-borbona);
+      border-color: var(--cafe-tierra);
     }
 
     .nav-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
     }
 
     .btn-action {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      background: var(--vino-borbona);
+      background: var(--cafe-tierra);
       color: var(--blanco);
       border: none;
-      padding: 8px 16px;
-      border-radius: 25px;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.82rem;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(98, 21, 45, 0.4);
+      box-shadow: 0 4px 10px rgba(111, 78, 55, 0.25);
       transition: all 0.2s ease;
     }
 
     .btn-action:hover {
-      background: var(--vino-hover);
+      background: var(--cafe-oscuro);
     }
 
     #periodTitle {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 400;
-      color: var(--oscuro-principal);
+      color: var(--cafe-oscuro);
       text-align: center;
     }
 
-    /* GRIDS DE MES Y SEMANA */
-    .month-grid {
+    /* GRIDS DE MES Y SEMANA EXTENDIDOS */
+    .month-grid, .week-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(42px, 1fr));
-      gap: 4px;
-      width: 100%;
-    }
-
-    .week-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(42px, 1fr));
-      gap: 6px;
+      grid-template-columns: repeat(7, minmax(44px, 1fr));
+      gap: 5px;
       width: 100%;
     }
 
     .grid-header-day {
       text-align: center;
       font-weight: 400;
-      font-size: 0.78rem;
-      color: var(--oscuro-principal);
+      font-size: 0.75rem;
+      color: var(--cafe-suave);
       padding: 4px 0;
     }
 
     .calendar-cell {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid var(--marron-calido);
-      border-radius: 10px;
-      min-height: 90px;
-      padding: 5px;
+      background: var(--blanco);
+      border: 1px solid var(--beige-mediano);
+      border-radius: 12px;
+      min-height: 125px; /* Marcos más altos y extendidos hacia abajo */
+      padding: 6px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
       transition: border-color 0.2s, transform 0.1s;
-      color: var(--oscuro-principal);
+      color: var(--cafe-oscuro);
+      position: relative;
     }
 
     .calendar-cell:hover {
-      border-color: var(--vino-borbona);
+      border-color: var(--cafe-tierra);
       transform: translateY(-2px);
     }
 
+    /* Resaltado para el día actual (HOY) */
+    .calendar-cell.is-today {
+      border: 2px solid var(--gold-hoy) !important;
+      background: #fffdf8 !important;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .calendar-cell.is-today::after {
+      content: "HOY";
+      position: absolute;
+      top: -7px;
+      right: 6px;
+      background: var(--gold-hoy);
+      color: #fff;
+      font-size: 0.55rem;
+      font-weight: 500;
+      padding: 1px 5px;
+      border-radius: 6px;
+    }
+
     .calendar-cell.other-month {
-      background: rgba(255, 255, 255, 0.3);
-      opacity: 0.4;
+      background: rgba(255, 255, 255, 0.4);
+      opacity: 0.45;
     }
 
     .cell-header {
@@ -213,16 +231,16 @@
     }
 
     .calendar-cell.anniversary {
-      border: 2px solid var(--gold);
-      background: #fffdf5;
+      border: 1.5px solid var(--aniversario);
+      background: #fff8f7;
     }
 
     .shift-mini-tag {
       font-size: 0.62rem;
-      padding: 2px 3px;
-      border-radius: 5px;
+      padding: 2px 4px;
+      border-radius: 6px;
       font-weight: 300;
-      margin-top: 2px;
+      margin-top: 3px;
       text-align: center;
       display: block;
       white-space: nowrap;
@@ -232,28 +250,28 @@
 
     .class-mini-tag {
       font-size: 0.6rem;
-      padding: 2px 3px;
-      border-radius: 5px;
+      padding: 2px 4px;
+      border-radius: 6px;
       font-weight: 300;
-      margin-top: 2px;
+      margin-top: 3px;
       text-align: center;
       display: block;
-      background: var(--vino-borbona);
+      background: var(--morado-clase);
       color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .shift-day { background: #eccc68; color: #2a0000; }
-    .shift-night { background: var(--oscuro-principal); color: #ffffff; }
-    .shift-rest { background: #2ed573; color: #ffffff; }
+    .shift-day { background: #e6c896; color: var(--cafe-oscuro); }
+    .shift-night { background: var(--cafe-oscuro); color: #ffffff; }
+    .shift-rest { background: #8fa382; color: #ffffff; }
 
     .plan-dots {
       display: flex;
       gap: 3px;
       flex-wrap: wrap;
-      margin-top: 3px;
+      margin-top: 4px;
     }
 
     .dot {
@@ -262,35 +280,36 @@
       border-radius: 50%;
     }
 
-    .dot.yeider { background-color: var(--oscuro-principal); }
-    .dot.nataly { background-color: var(--vino-borbona); }
+    .dot.yeider { background-color: var(--cafe-oscuro); }
+    .dot.nataly { background-color: var(--aniversario); }
+    .dot.both { background-color: var(--gold-hoy); }
 
-    /* ESTILOS VISTA DIA A DIA */
+    /* ESTILOS VISTA DIA A DIA MÓVIL */
     .day-card {
-      background: rgba(255, 255, 255, 0.95);
-      border: 2px solid var(--marron-calido);
-      border-radius: 16px;
+      background: var(--blanco);
+      border: 1.5px solid var(--beige-mediano);
+      border-radius: 18px;
       overflow: hidden;
     }
 
+    .day-card.is-today {
+      border: 2px solid var(--gold-hoy);
+    }
+
     .day-card.anniversary {
-      border: 2px solid var(--gold);
-      background: #fffdf5;
+      border: 2px solid var(--aniversario);
+      background: #fff8f7;
     }
 
     .day-header {
-      background: var(--oscuro-principal);
+      background: var(--cafe-tierra);
       color: var(--blanco);
-      padding: 8px 12px;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 300;
       font-size: 0.85rem;
-    }
-
-    .day-header.anniversary-header {
-      background: linear-gradient(45deg, #ffa502, #62152d);
     }
 
     .shift-tag {
@@ -311,21 +330,21 @@
 
     .person-header {
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 400;
       padding-bottom: 6px;
-      border-bottom: 2px dashed var(--oliva-suave);
+      border-bottom: 1px dashed var(--beige-mediano);
       margin-bottom: 8px;
     }
 
-    .person-header.yeider { color: var(--oscuro-principal); }
-    .person-header.nataly { color: var(--vino-borbona); }
+    .person-header.yeider { color: var(--cafe-oscuro); }
+    .person-header.nataly { color: var(--aniversario); }
 
     .day-by-day-controls {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 15px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
     .days-slider {
@@ -338,20 +357,25 @@
     .day-pill {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid var(--marron-calido);
+      background: var(--blanco);
+      border: 1px solid var(--beige-mediano);
       padding: 6px 12px;
       border-radius: 12px;
       font-size: 0.8rem;
       cursor: pointer;
       white-space: nowrap;
-      color: var(--oscuro-principal);
+      color: var(--cafe-oscuro);
     }
 
     .day-pill.active {
-      background: var(--vino-borbona);
+      background: var(--cafe-tierra);
       color: var(--blanco);
-      border-color: var(--vino-borbona);
+      border-color: var(--cafe-tierra);
+    }
+
+    .day-pill.is-today-pill {
+      border-color: var(--gold-hoy);
+      font-weight: 400;
     }
 
     .person-filter-bar {
@@ -363,17 +387,17 @@
     .filter-btn {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid var(--marron-calido);
+      background: var(--blanco);
+      border: 1px solid var(--beige-mediano);
       padding: 5px 12px;
       border-radius: 10px;
       font-size: 0.78rem;
       cursor: pointer;
-      color: var(--oscuro-principal);
+      color: var(--cafe-oscuro);
     }
 
     .filter-btn.active {
-      background: var(--oscuro-principal);
+      background: var(--cafe-oscuro);
       color: var(--blanco);
     }
 
@@ -381,17 +405,17 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-bottom: 6px;
-      background: rgba(255, 255, 255, 0.85);
+      margin-bottom: 8px;
+      background: var(--card-bg);
       padding: 6px;
-      border-radius: 8px;
-      border-left: 3px solid var(--marron-calido);
+      border-radius: 10px;
+      border-left: 3px solid var(--cafe-suave);
     }
 
     .hour-time {
       font-size: 0.72rem;
       font-weight: 400;
-      color: var(--marron-calido);
+      color: var(--cafe-suave);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -400,31 +424,31 @@
     .hour-time .sec-time {
       font-size: 0.68rem;
       font-weight: 200;
-      color: var(--oscuro-principal);
-      opacity: 0.7;
+      color: var(--cafe-oscuro);
+      opacity: 0.75;
     }
 
     .plan-item {
       background: var(--blanco);
-      border: 1px solid var(--marron-calido);
-      padding: 5px 7px;
-      border-radius: 6px;
+      border: 1px solid var(--beige-mediano);
+      padding: 6px 8px;
+      border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.8rem;
-      color: var(--oscuro-principal);
+      color: var(--cafe-oscuro);
     }
 
     .plan-item.completed {
       text-decoration: line-through;
-      background: #e8f8f5;
-      color: #27ae60;
+      background: #eef5ec;
+      color: #388e3c;
     }
 
     .plan-item.failed {
-      background: #fadbd8;
-      color: #c0392b;
+      background: #fdeaea;
+      color: #d32f2f;
     }
 
     .plan-actions { display: flex; gap: 3px; }
@@ -440,87 +464,90 @@
     .add-btn-slot {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      background: var(--oliva-suave);
+      background: var(--beige-mediano);
       border: none;
       width: 100%;
-      padding: 4px;
+      padding: 5px;
       border-radius: 6px;
-      color: var(--blanco);
+      color: var(--cafe-oscuro);
       font-size: 0.72rem;
       cursor: pointer;
     }
 
     .add-btn-slot:hover {
-      background: var(--marron-calido);
+      background: var(--cafe-suave);
+      color: var(--blanco);
     }
 
     .postponed-section {
-      margin-top: 25px;
-      background: rgba(255, 255, 255, 0.85);
-      border: 2px dashed var(--vino-borbona);
+      margin-top: 22px;
+      background: var(--blanco);
+      border: 1.5px dashed var(--cafe-suave);
       border-radius: 16px;
       padding: 12px;
     }
 
     .postponed-section h3 {
       margin-top: 0;
-      color: var(--vino-borbona);
-      font-size: 0.95rem;
+      color: var(--cafe-tierra);
+      font-size: 0.92rem;
       font-weight: 300;
     }
 
     .postponed-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
 
     .postponed-item {
-      background: var(--blanco);
+      background: var(--card-bg);
       padding: 8px;
       border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.82rem;
-      color: var(--oscuro-principal);
-      border: 1px solid var(--oliva-suave);
+      color: var(--cafe-oscuro);
+      border: 1px solid var(--beige-mediano);
     }
 
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(42, 0, 0, 0.7);
+      background: rgba(62, 39, 35, 0.65);
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      padding: 10px;
+      padding: 12px;
     }
 
     .modal-content {
-      background: var(--blanco);
+      background: var(--card-bg);
       padding: 18px;
-      border-radius: 16px;
+      border-radius: 18px;
       width: 100%;
       max-width: 380px;
-      color: var(--oscuro-principal);
+      color: var(--cafe-oscuro);
+      border: 1px solid var(--beige-mediano);
     }
 
     .modal-content input, .modal-content select {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       width: 100%;
-      padding: 8px;
+      padding: 8px 10px;
       margin-bottom: 10px;
       border-radius: 8px;
-      border: 1px solid var(--marron-calido);
+      border: 1px solid var(--beige-mediano);
       font-size: 0.85rem;
+      background: var(--blanco);
     }
 
     .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
-    .btn-save-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--vino-borbona); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
-    .btn-cancel-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--oliva-suave); color: var(--blanco); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+    .btn-save-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--cafe-tierra); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+    .btn-cancel-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--beige-mediano); color: var(--cafe-oscuro); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
 
     @media (max-width: 600px) {
       .day-columns { grid-template-columns: 1fr; }
-      .person-column { border-bottom: 2px solid var(--oliva-suave); }
+      .person-column { border-bottom: 1px solid var(--beige-mediano); }
     }
   </style>
 </head>
@@ -539,7 +566,7 @@
       <button class="btn-view" onclick="switchView('month')">📅 Mes Completo</button>
       <button class="btn-view active" onclick="switchView('week')">📆 Semanal</button>
       <button class="btn-view" onclick="switchView('day')">☀️ Día a Día</button>
-      <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--vino-borbona); color:white; border:none;">🔔 Alertas</button>
+      <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--cafe-tierra); color:white; border:none;">🔔 Alertas</button>
     </div>
 
     <div class="nav-controls">
@@ -555,7 +582,7 @@
     <div class="postponed-section">
       <h3>📌 Planes Pendientes / Aplazados</h3>
       <ul id="postponedList" class="postponed-list">
-        <li style="color: var(--marron-calido); font-size: 0.82rem;">No hay planes acumulados.</li>
+        <li style="color: var(--cafe-suave); font-size: 0.82rem;">No hay planes acumulados.</li>
       </ul>
     </div>
   </div>
@@ -563,9 +590,17 @@
   <div class="modal" id="planModal">
     <div class="modal-content">
       <h3 id="modalTitle">Nuevo Plan</h3>
-      <input type="text" id="planTextInput" placeholder="Ej: Pago de arriendo, Salida...">
+      <input type="text" id="planTextInput" placeholder="Ej: Pago de arriendo, Salida a cenar...">
       
-      <label style="font-size: 0.78rem; font-weight:300; color:var(--marron-calido);">Repetición:</label>
+      <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Asignar a / Para quién:</label>
+      <select id="planPersonAssign">
+        <option value="selected">Solo para la columna actual</option>
+        <option value="both">💑 Para Ambos (Yeider & Nataly)</option>
+        <option value="yeider">👦 Yeider</option>
+        <option value="nataly">👧 Nataly</option>
+      </select>
+
+      <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Repetición:</label>
       <select id="planRecurrence">
         <option value="none">Única vez</option>
         <option value="daily">Todos los días</option>
@@ -573,7 +608,7 @@
         <option value="monthly">Todos los meses (Ej. día 4)</option>
       </select>
 
-      <label style="font-size: 0.78rem; font-weight:300; color:var(--marron-calido);">Antelación de Alerta:</label>
+      <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Antelación de Alerta:</label>
       <select id="planAdvanceNotice">
         <option value="0">En el momento exacto</option>
         <option value="15">15 minutos antes</option>
@@ -626,6 +661,13 @@
     ];
     const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
+    function isToday(dateObj) {
+      const today = new Date();
+      return dateObj.getDate() === today.getDate() &&
+             dateObj.getMonth() === today.getMonth() &&
+             dateObj.getFullYear() === today.getFullYear();
+    }
+
     function updateClocks() {
       const now = new Date();
       document.getElementById('timeChile').innerText = now.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit' });
@@ -638,7 +680,7 @@
     function requestNotificationPermission() {
       if (!("Notification" in window)) return alert("Navegador no soporta notificaciones.");
       Notification.requestPermission().then(permission => {
-        if (permission === "granted") alert("¡Alertas activadas!");
+        if (permission === "granted") alert("¡Alertas activadas con éxito!");
       });
     }
 
@@ -784,13 +826,14 @@
         const dateObj = new Date(year, month, d);
         const dateStr = formatDate(dateObj);
         const isAnniversary = (d === 20);
+        const isTodayCell = isToday(dateObj);
         const shiftInfo = getYeiderShift(dateObj);
         const dayPlans = getPlansForDate(dateStr);
         const dayOfWeek = dateObj.getDay(); 
         const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
 
         const cell = document.createElement('div');
-        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''}`;
+        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''}`;
         cell.onclick = () => { selectedDayDate = dateObj; switchView('day'); };
 
         let dotsHTML = '<div class="plan-dots">';
@@ -837,13 +880,14 @@
         const dateStr = formatDate(dayDate);
         const dayNum = dayDate.getDate();
         const isAnniversary = (dayNum === 20);
+        const isTodayCell = isToday(dayDate);
         const shiftInfo = getYeiderShift(dayDate);
         const dayPlans = getPlansForDate(dateStr);
         const dayOfWeek = dayDate.getDay();
         const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
 
         const cell = document.createElement('div');
-        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''}`;
+        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''}`;
         cell.onclick = () => { selectedDayDate = dayDate; switchView('day'); };
 
         let dotsHTML = '<div class="plan-dots">';
@@ -868,7 +912,8 @@
       const container = document.getElementById('dayContainer');
       container.innerHTML = '';
 
-      document.getElementById('periodTitle').innerText = `${dayNames[(selectedDayDate.getDay() + 6) % 7]} ${selectedDayDate.getDate()} de ${getMonthName(selectedDayDate.getMonth())} ${selectedDayDate.getFullYear()}`;
+      const isTodayDay = isToday(selectedDayDate);
+      document.getElementById('periodTitle').innerText = `${dayNames[(selectedDayDate.getDay() + 6) % 7]} ${selectedDayDate.getDate()} de ${getMonthName(selectedDayDate.getMonth())} ${selectedDayDate.getFullYear()} ${isTodayDay ? '⭐ HOY' : ''}`;
 
       const diffHours = getTimeDifferenceHours();
       const dateStr = formatDate(selectedDayDate);
@@ -883,7 +928,8 @@
         let d = new Date(weekStart);
         d.setDate(d.getDate() + i);
         let activeClass = formatDate(d) === dateStr ? 'active' : '';
-        sliderHTML += `<div class="day-pill ${activeClass}" onclick="selectDayFromSlider('${formatDate(d)}')">${dayNames[i].substring(0,3)} ${d.getDate()}</div>`;
+        let todayClass = isToday(d) ? 'is-today-pill' : '';
+        sliderHTML += `<div class="day-pill ${activeClass} ${todayClass}" onclick="selectDayFromSlider('${formatDate(d)}')">${dayNames[i].substring(0,3)} ${d.getDate()} ${isToday(d) ? '⭐' : ''}</div>`;
       }
       sliderHTML += '</div>';
 
@@ -896,14 +942,14 @@
       `;
 
       let dayCard = document.createElement('div');
-      dayCard.className = `day-card ${isAnniversary ? 'anniversary' : ''}`;
+      dayCard.className = `day-card ${isAnniversary ? 'anniversary' : ''} ${isTodayDay ? 'is-today' : ''}`;
       
       let headerHTML = `
         <div class="day-header ${isAnniversary ? 'anniversary-header' : ''}">
-          <span>${dayNames[(selectedDayDate.getDay()+6)%7]} ${selectedDayDate.getDate()} ${isAnniversary ? '💖 ANIVERSARIO 🎉' : ''}</span>
+          <span>${dayNames[(selectedDayDate.getDay()+6)%7]} ${selectedDayDate.getDate()} ${isAnniversary ? '💖 ANIVERSARIO 🎉' : ''} ${isTodayDay ? '⭐ (HOY)' : ''}</span>
           <div>
             <span class="shift-tag ${shiftInfo.class}">Yeider: ${shiftInfo.text}</span>
-            ${isNatalyClassDay ? '<span class="shift-tag" style="background:var(--vino-borbona); color:white;">Clase Nata 📚 (7pm-10pm BO)</span>' : ''}
+            ${isNatalyClassDay ? '<span class="shift-tag" style="background:var(--morado-clase); color:white;">Clase Nata 📚 (7pm-10pm BO)</span>' : ''}
           </div>
         </div>
       `;
@@ -1064,7 +1110,7 @@
       const keys = Object.keys(allPostponed);
 
       if (keys.length === 0) {
-        list.innerHTML = '<li style="color: var(--marron-calido); font-size: 0.82rem;">No hay planes acumulados.</li>';
+        list.innerHTML = '<li style="color: var(--cafe-suave); font-size: 0.82rem;">No hay planes acumulados.</li>';
         return;
       }
 
@@ -1082,8 +1128,9 @@
 
     function openPlanModal(date, person, hour) {
       activeSlotInfo = { date, person, hour };
-      document.getElementById('modalTitle').innerText = `Plan para ${person.toUpperCase()} (${hour})`;
+      document.getElementById('modalTitle').innerText = `Nuevo Plan (${hour})`;
       document.getElementById('planTextInput').value = '';
+      document.getElementById('planPersonAssign').value = 'selected';
       document.getElementById('planRecurrence').value = 'none';
       document.getElementById('planAdvanceNotice').value = '0';
       document.getElementById('planModal').style.display = 'flex';
@@ -1095,20 +1142,30 @@
 
     function savePlan() {
       const text = document.getElementById('planTextInput').value.trim();
+      const assignOption = document.getElementById('planPersonAssign').value;
       const recurrence = document.getElementById('planRecurrence').value;
       const advanceNotice = document.getElementById('planAdvanceNotice').value;
+
       if (!text) return alert('Escribe un texto para el plan.');
 
-      plansRef.push({
+      const basePlan = {
         date: activeSlotInfo.date,
-        person: activeSlotInfo.person,
         hour: activeSlotInfo.hour,
         text: text,
         recurrence: recurrence,
         advanceNotice: advanceNotice,
         status: 'pending',
         notified: false
-      });
+      };
+
+      if (assignOption === 'both') {
+        plansRef.push({ ...basePlan, person: 'yeider' });
+        plansRef.push({ ...basePlan, person: 'nataly' });
+      } else if (assignOption === 'yeider' || assignOption === 'nataly') {
+        plansRef.push({ ...basePlan, person: assignOption });
+      } else {
+        plansRef.push({ ...basePlan, person: activeSlotInfo.person });
+      }
 
       closeModal();
     }
