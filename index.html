@@ -30,32 +30,28 @@
       padding: 10px;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: var(--blanco);
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Fondo de agua romántico */
-    .container::before {
+    /* Fondo de agua romántico FIJO que no se pierde al hacer scroll */
+    body::before {
       content: "";
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background-image: url('https://i.imgur.com/SPBevo4.png');
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 50%;
-      opacity: 0.04;
+      background-size: min(350px, 70vw);
+      opacity: 0.06;
       pointer-events: none;
       z-index: 0;
     }
 
-    .container > * {
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      border-radius: 20px;
+      padding: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
       position: relative;
       z-index: 1;
     }
@@ -155,7 +151,7 @@
       text-align: center;
     }
 
-    /* VISTA MENSUAL (Grid de Calendario) */
+    /* VISTA MENSUAL & SEMANAL GRID */
     .month-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -174,7 +170,7 @@
       background: var(--blanco);
       border: 1px solid var(--plomo-claro);
       border-radius: 10px;
-      min-height: 80px;
+      min-height: 95px;
       padding: 6px;
       display: flex;
       flex-direction: column;
@@ -205,6 +201,24 @@
       background: #fffdf5;
     }
 
+    /* Tags de Turno pequeños para Mes y Semana */
+    .shift-mini-tag {
+      font-size: 0.65rem;
+      padding: 2px 4px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-top: 3px;
+      text-align: center;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .shift-day { background: #eccc68; color: #2f3542; }
+    .shift-night { background: #3742fa; color: #ffffff; }
+    .shift-rest { background: #2ed573; color: #ffffff; }
+
     .plan-dots {
       display: flex;
       gap: 3px;
@@ -221,8 +235,9 @@
 
     .dot.yeider { background-color: var(--plomo-oscuro); }
     .dot.nataly { background-color: var(--rosado); }
+    .dot.nataly-class { background-color: #9b59b6; }
 
-    /* Days List (Weekly Layout) */
+    /* Days List Layout */
     .week-container {
       display: flex;
       flex-direction: column;
@@ -268,9 +283,6 @@
       border-radius: 10px;
       font-weight: 600;
     }
-    .shift-day { background: #eccc68; color: #2f3542; }
-    .shift-night { background: #3742fa; color: #ffffff; }
-    .shift-rest { background: #2ed573; color: #ffffff; }
 
     .day-columns {
       display: grid;
@@ -571,12 +583,22 @@
       <h3 id="modalTitle">Nuevo Plan</h3>
       <input type="text" id="planTextInput" placeholder="Ej: Pago de arriendo, Salida a cenar...">
       
-      <label style="font-size: 0.8rem; font-weight:600; color:var(--plomo-medio); display:block; margin-bottom:4px;">Repetir plan:</label>
+      <label style="font-size: 0.8rem; font-weight:600; color:var(--plomo-medio); display:block; margin-bottom:4px;">Repetición:</label>
       <select id="planRecurrence">
         <option value="none">Única vez</option>
         <option value="daily">Todos los días</option>
         <option value="weekly">Todas las semanas</option>
         <option value="monthly">Todos los meses (ej. día 4)</option>
+        <option value="nataly_classes">Clases Nataly (Mar / Jue / Sáb)</option>
+      </select>
+
+      <label style="font-size: 0.8rem; font-weight:600; color:var(--plomo-medio); display:block; margin-bottom:4px;">Avisar / Notificar:</label>
+      <select id="planAdvanceNotice">
+        <option value="0">Al momento de la hora exacta</option>
+        <option value="15">15 Minutos antes</option>
+        <option value="60">1 Hora antes</option>
+        <option value="1440">1 Día antes</option>
+        <option value="2880">2 Días antes</option>
       </select>
 
       <div class="modal-buttons">
@@ -607,11 +629,11 @@
     const plansRef = database.ref('planes_v2');
     const postponedRef = database.ref('postergados_v2');
 
-    let currentView = 'week'; // 'month', 'week', 'day'
+    let currentView = 'week';
     let currentStartOfWeek = getMonday(new Date());
     let currentMonthDate = new Date();
     let selectedDayDate = new Date();
-    let selectedPersonFilter = 'all'; // 'all', 'yeider', 'nataly'
+    let selectedPersonFilter = 'all'; 
     
     let allPlans = {};
     let allPostponed = {};
@@ -625,7 +647,7 @@
     ];
     const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
-    // Actualizador de Relojes superiores
+    // Relojes en tiempo real
     function updateClocks() {
       const now = new Date();
       document.getElementById('timeChile').innerText = now.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit' });
@@ -635,31 +657,41 @@
     setInterval(updateClocks, 1000);
     updateClocks();
 
-    // Sistema de Notificaciones Web Push
+    // Notificaciones Web con Antelación
     function requestNotificationPermission() {
       if (!("Notification" in window)) {
-        alert("Este navegador no soporta notificaciones de escritorio.");
+        alert("Este navegador no soporta notificaciones.");
         return;
       }
       Notification.requestPermission().then(permission => {
         if (permission === "granted") {
-          alert("¡Notificaciones activadas correctamente! Te avisaremos antes de tus planes.");
+          alert("¡Alertas activadas con éxito!");
         } else {
-          alert("Has denegado las notificaciones.");
+          alert("Has rechazado los permisos de notificación.");
         }
       });
     }
 
     function checkNotifications(now) {
       if (Notification.permission !== "granted") return;
-      const currentHourStr = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-      const todayStr = formatDate(now);
 
       Object.keys(allPlans).forEach(key => {
         const p = allPlans[key];
-        if (p.date === todayStr && p.hour === currentHourStr && !p.notified && p.status === 'pending') {
+        if (p.notified || p.status !== 'pending') return;
+
+        // Calcular la hora del evento
+        const eventDateParts = p.date.split('-');
+        const eventHourParts = p.hour.split(':');
+        const eventTime = new Date(eventDateParts[0], eventDateParts[1] - 1, eventDateParts[2], eventHourParts[0], eventHourParts[1]);
+
+        // Antelación en minutos
+        const advanceMinutes = parseInt(p.advanceNotice || 0);
+        const notifyTime = new Date(eventTime.getTime() - (advanceMinutes * 60 * 1000));
+
+        if (now >= notifyTime && now < eventTime) {
+          let advanceText = advanceMinutes > 0 ? `(En ${advanceMinutes} min)` : '';
           new Notification("❤️ Recordatorio de Plan", {
-            body: `Tienes programado: "${p.text}" (${p.person.toUpperCase()}) a las ${p.hour}`,
+            body: `${advanceText} ${p.text} (${p.person.toUpperCase()}) a las ${p.hour}`,
             icon: "https://i.imgur.com/SPBevo4.png"
           });
           plansRef.child(key).update({ notified: true });
@@ -667,14 +699,11 @@
       });
     }
 
-    // Diferencia horaria Chile - Bolivia
     function getTimeDifferenceHours() {
       const now = new Date();
       const chileStr = now.toLocaleString('en-US', { timeZone: 'America/Santiago' });
       const boliviaStr = now.toLocaleString('en-US', { timeZone: 'America/La_Paz' });
-      const chileDate = new Date(chileStr);
-      const boliviaDate = new Date(boliviaStr);
-      return Math.round((chileDate - boliviaDate) / (1000 * 60 * 60));
+      return Math.round((new Date(chileStr) - new Date(boliviaStr)) / (1000 * 60 * 60));
     }
 
     function formatHourOffset(baseHourStr, hourOffset) {
@@ -753,7 +782,7 @@
       }
     }
 
-    // --- RENDERIZADO VISTA MENSUAL ---
+    // --- RENDERIZADO VISTA MENSUAL CON TURNOS Y PLANES ---
     function renderMonth() {
       const container = document.getElementById('monthContainer');
       container.className = 'month-grid';
@@ -764,7 +793,6 @@
 
       document.getElementById('periodTitle').innerText = `${getMonthName(month).toUpperCase()} ${year}`;
 
-      // Cabeceras de días de la semana
       const headers = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
       headers.forEach(h => {
         const div = document.createElement('div');
@@ -786,20 +814,23 @@
         container.appendChild(cell);
       }
 
-      // Días del mes actual
+      // Días mes actual
       for (let d = 1; d <= totalDays; d++) {
         const dateObj = new Date(year, month, d);
         const dateStr = formatDate(dateObj);
         const isAnniversary = (d === 20);
+        const shiftInfo = getYeiderShift(dateObj);
         const dayPlans = getPlansForDate(dateStr);
 
         const cell = document.createElement('div');
         cell.className = `month-cell ${isAnniversary ? 'anniversary' : ''}`;
-        cell.onclick = () => { selectedDayDate = dateObj; switchView('day'); document.querySelectorAll('.btn-view')[2].classList.add('active'); document.querySelectorAll('.btn-view')[1].classList.remove('active'); };
+        cell.onclick = () => { selectedDayDate = dateObj; switchView('day'); };
 
         let dotsHTML = '<div class="plan-dots">';
         dayPlans.forEach(p => {
-          dotsHTML += `<div class="dot ${p.person}"></div>`;
+          let dotClass = p.person;
+          if(p.recurrence === 'nataly_classes') dotClass = 'nataly-class';
+          dotsHTML += `<div class="dot ${dotClass}" title="${p.text}"></div>`;
         });
         dotsHTML += '</div>';
 
@@ -807,6 +838,7 @@
           <div class="month-cell-header">
             <span>${d} ${isAnniversary ? '💖' : ''}</span>
           </div>
+          <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
           ${dotsHTML}
         `;
         container.appendChild(cell);
@@ -875,7 +907,6 @@
       const isAnniversary = (selectedDayDate.getDate() === 20);
       const shiftInfo = getYeiderShift(selectedDayDate);
 
-      // Slider de días de la semana actual
       let weekStart = getMonday(selectedDayDate);
       let sliderHTML = '<div class="days-slider">';
       for (let i = 0; i < 7; i++) {
@@ -886,7 +917,6 @@
       }
       sliderHTML += '</div>';
 
-      // Filtros por persona
       let filterHTML = `
         <div class="person-filter-bar">
           <button class="filter-btn ${selectedPersonFilter === 'all' ? 'active' : ''}" onclick="setPersonFilter('all')">Ambos</button>
@@ -971,7 +1001,7 @@
               <button class="btn-icon" title="Completado" onclick="setPlanStatus('${p.key}', 'completed')">✔</button>
               <button class="btn-icon" title="Incompletado" onclick="setPlanStatus('${p.key}', 'failed')">❌</button>
               <button class="btn-icon" title="Aplazar" onclick="postponePlan('${p.key}', '${p.text}')">📌</button>
-              <button class="btn-icon" title="Eliminar" onclick="deletePlan('${p.key}')">🗑️</button>
+              <button class="btn-icon" title="Eliminar / Quitar" onclick="deletePlan('${p.key}')">🗑️</button>
             </div>
           </div>
         `).join('');
@@ -1011,7 +1041,7 @@
       return result;
     }
 
-    // Validador inteligente de recurrencia (como Arriendo cada 4 de mes, diario o semanal)
+    // Reglas de recurrencia (Diario, Semanal, Mensual y Clases de Nataly)
     function matchesRecurrence(item, targetDateStr) {
       if (item.date === targetDateStr) return true;
       if (!item.recurrence || item.recurrence === 'none') return false;
@@ -1029,6 +1059,10 @@
         return diffDays >= 0 && diffDays % 7 === 0;
       } else if (item.recurrence === 'monthly') {
         return targetDate.getDate() === itemDate.getDate();
+      } else if (item.recurrence === 'nataly_classes') {
+        // Martes (2), Jueves (4) y Sábado (6)
+        const dayOfWeek = targetDate.getDay();
+        return dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6;
       }
       return false;
     }
@@ -1060,6 +1094,7 @@
       document.getElementById('modalTitle').innerText = `Plan para ${person.toUpperCase()} (${hour})`;
       document.getElementById('planTextInput').value = '';
       document.getElementById('planRecurrence').value = 'none';
+      document.getElementById('planAdvanceNotice').value = '0';
       document.getElementById('planModal').style.display = 'flex';
     }
 
@@ -1070,6 +1105,7 @@
     function savePlan() {
       const text = document.getElementById('planTextInput').value.trim();
       const recurrence = document.getElementById('planRecurrence').value;
+      const advanceNotice = document.getElementById('planAdvanceNotice').value;
       if (!text) return alert('Escribe un texto para el plan.');
 
       plansRef.push({
@@ -1078,6 +1114,7 @@
         hour: activeSlotInfo.hour,
         text: text,
         recurrence: recurrence,
+        advanceNotice: advanceNotice,
         status: 'pending',
         notified: false
       });
