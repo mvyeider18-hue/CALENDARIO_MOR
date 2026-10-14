@@ -7,7 +7,6 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/SPBevo4.png">
   <link rel="apple-touch-icon" href="https://i.imgur.com/SPBevo4.png">
-  <!-- Tipografía Montserrat ExtraLight (pesos 200, 300, 400) -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -37,7 +36,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Imagen de fondo romántica visible e inmóvil al deslizar */
     body::before {
       content: "";
       position: fixed;
@@ -106,7 +104,7 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
@@ -129,6 +127,36 @@
       border-color: var(--cafe-tierra);
     }
 
+    /* Barra de Multiselección */
+    .multi-select-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      background: var(--blanco);
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--beige-mediano);
+      flex-wrap: wrap;
+    }
+
+    .btn-multi {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--beige-mediano);
+      color: var(--cafe-oscuro);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .btn-multi.active {
+      background: var(--cafe-tierra);
+      color: var(--blanco);
+    }
+
     .nav-controls {
       display: flex;
       justify-content: space-between;
@@ -147,11 +175,6 @@
       font-size: 0.82rem;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(111, 78, 55, 0.25);
-      transition: all 0.2s ease;
-    }
-
-    .btn-action:hover {
-      background: var(--cafe-oscuro);
     }
 
     #periodTitle {
@@ -161,7 +184,6 @@
       text-align: center;
     }
 
-    /* GRID MES COMPLETO (7 columnas) */
     .month-grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(44px, 1fr));
@@ -169,7 +191,6 @@
       width: 100%;
     }
 
-    /* GRID SEMANAL REDISEÑADO A 3 FILAS */
     .week-container-3rows {
       display: flex;
       flex-direction: column;
@@ -177,18 +198,9 @@
       width: 100%;
     }
 
-    .week-row {
-      display: grid;
-      gap: 8px;
-    }
-
-    .week-row.row-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .week-row.row-3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    .week-row { display: grid; gap: 8px; }
+    .week-row.row-2 { grid-template-columns: repeat(2, 1fr); }
+    .week-row.row-3 { grid-template-columns: repeat(3, 1fr); }
 
     .grid-header-day {
       text-align: center;
@@ -208,21 +220,19 @@
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
-      transition: border-color 0.2s, transform 0.1s;
+      transition: all 0.2s;
       color: var(--cafe-oscuro);
       position: relative;
     }
 
-    .calendar-cell:hover {
-      border-color: var(--cafe-tierra);
-      transform: translateY(-2px);
+    .calendar-cell.selected-multi {
+      border: 2px solid var(--cafe-tierra) !important;
+      background: #f1e9e0 !important;
     }
 
-    /* Resaltado del día actual (HOY) */
     .calendar-cell.is-today {
       border: 2px solid var(--gold-hoy) !important;
       background: #fffdf8 !important;
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
     }
 
     .calendar-cell.is-today::after {
@@ -269,6 +279,16 @@
       text-overflow: ellipsis;
     }
 
+    .custom-tag-item {
+      font-size: 0.62rem;
+      padding: 2px 5px;
+      border-radius: 6px;
+      margin-top: 3px;
+      text-align: center;
+      color: white;
+      font-weight: 300;
+    }
+
     .class-mini-tag {
       font-size: 0.62rem;
       padding: 3px 6px;
@@ -312,14 +332,8 @@
       overflow: hidden;
     }
 
-    .day-card.is-today {
-      border: 2px solid var(--gold-hoy);
-    }
-
-    .day-card.anniversary {
-      border: 2px solid var(--aniversario);
-      background: #fff8f7;
-    }
+    .day-card.is-today { border: 2px solid var(--gold-hoy); }
+    .day-card.anniversary { border: 2px solid var(--aniversario); background: #fff8f7; }
 
     .day-header {
       background: var(--cafe-tierra);
@@ -332,21 +346,9 @@
       font-size: 0.85rem;
     }
 
-    .shift-tag {
-      font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-weight: 300;
-    }
-
-    .day-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .person-column {
-      padding: 8px;
-    }
+    .shift-tag { font-size: 0.72rem; padding: 3px 8px; border-radius: 10px; font-weight: 300; }
+    .day-columns { display: grid; grid-template-columns: 1fr 1fr; }
+    .person-column { padding: 8px; }
 
     .person-header {
       text-align: center;
@@ -360,19 +362,8 @@
     .person-header.yeider { color: var(--cafe-oscuro); }
     .person-header.nataly { color: var(--aniversario); }
 
-    .day-by-day-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .days-slider {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
+    .day-by-day-controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .days-slider { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
 
     .day-pill {
       font-family: 'Montserrat', sans-serif;
@@ -387,22 +378,10 @@
       color: var(--cafe-oscuro);
     }
 
-    .day-pill.active {
-      background: var(--cafe-tierra);
-      color: var(--blanco);
-      border-color: var(--cafe-tierra);
-    }
+    .day-pill.active { background: var(--cafe-tierra); color: var(--blanco); border-color: var(--cafe-tierra); }
+    .day-pill.is-today-pill { border-color: var(--gold-hoy); font-weight: 400; }
 
-    .day-pill.is-today-pill {
-      border-color: var(--gold-hoy);
-      font-weight: 400;
-    }
-
-    .person-filter-bar {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-    }
+    .person-filter-bar { display: flex; justify-content: center; gap: 6px; }
 
     .filter-btn {
       font-family: 'Montserrat', sans-serif;
@@ -416,10 +395,7 @@
       color: var(--cafe-oscuro);
     }
 
-    .filter-btn.active {
-      background: var(--cafe-oscuro);
-      color: var(--blanco);
-    }
+    .filter-btn.active { background: var(--cafe-oscuro); color: var(--blanco); }
 
     .hour-slot {
       display: flex;
@@ -441,12 +417,7 @@
       gap: 4px;
     }
 
-    .hour-time .sec-time {
-      font-size: 0.68rem;
-      font-weight: 200;
-      color: var(--cafe-oscuro);
-      opacity: 0.75;
-    }
+    .hour-time .sec-time { font-size: 0.68rem; font-weight: 200; color: var(--cafe-oscuro); opacity: 0.75; }
 
     .plan-item {
       background: var(--blanco);
@@ -460,26 +431,11 @@
       color: var(--cafe-oscuro);
     }
 
-    .plan-item.completed {
-      text-decoration: line-through;
-      background: #eef5ec;
-      color: #388e3c;
-    }
-
-    .plan-item.failed {
-      background: #fdeaea;
-      color: #d32f2f;
-    }
+    .plan-item.completed { text-decoration: line-through; background: #eef5ec; color: #388e3c; }
+    .plan-item.failed { background: #fdeaea; color: #d32f2f; }
 
     .plan-actions { display: flex; gap: 3px; }
-
-    .btn-icon {
-      border: none;
-      background: none;
-      cursor: pointer;
-      font-size: 0.8rem;
-      padding: 2px;
-    }
+    .btn-icon { border: none; background: none; cursor: pointer; font-size: 0.8rem; padding: 2px; }
 
     .add-btn-slot {
       font-family: 'Montserrat', sans-serif;
@@ -494,12 +450,7 @@
       cursor: pointer;
     }
 
-    .add-btn-slot:hover {
-      background: var(--cafe-suave);
-      color: var(--blanco);
-    }
-
-    .postponed-section {
+    .postponed-section, .management-section {
       margin-top: 22px;
       background: var(--blanco);
       border: 1.5px dashed var(--cafe-suave);
@@ -507,16 +458,23 @@
       padding: 12px;
     }
 
-    .postponed-section h3 {
+    .postponed-section h3, .management-section h3 {
       margin-top: 0;
       color: var(--cafe-tierra);
       font-size: 0.92rem;
       font-weight: 300;
     }
 
-    .postponed-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+    .postponed-list, .management-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-    .postponed-item {
+    .postponed-item, .management-item {
       background: var(--card-bg);
       padding: 8px;
       border-radius: 8px;
@@ -568,7 +526,6 @@
     @media (max-width: 600px) {
       .day-columns { grid-template-columns: 1fr; }
       .person-column { border-bottom: 1px solid var(--beige-mediano); }
-      .week-row.row-3 { grid-template-columns: 1fr 1fr 1fr; }
     }
   </style>
 </head>
@@ -590,6 +547,14 @@
       <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--cafe-tierra); color:white; border:none;">🔔 Alertas</button>
     </div>
 
+    <!-- Barra de Selección Múltiple -->
+    <div class="multi-select-bar">
+      <button class="btn-multi" id="btnToggleMulti" onclick="toggleMultiSelectMode()">☑️ Selección Múltiple</button>
+      <button class="btn-multi" id="btnGroupPlan" onclick="openGroupPlanModal()" style="display:none;">➕ Plan en Grupo</button>
+      <button class="btn-multi" id="btnGroupTag" onclick="openTagModal()" style="display:none;">🏷️ Nueva Etiqueta</button>
+      <button class="btn-multi" id="btnGroupDelete" onclick="deleteSelectedDaysData()" style="display:none; background:#d32f2f; color:white;">🗑️ Borrar en Grupo</button>
+    </div>
+
     <div class="nav-controls">
       <button class="btn-action" onclick="changePeriod(-1)">❮ Ant.</button>
       <div id="periodTitle">Cargando...</div>
@@ -606,8 +571,17 @@
         <li style="color: var(--cafe-suave); font-size: 0.82rem;">No hay planes acumulados.</li>
       </ul>
     </div>
+
+    <!-- Gestión de Planes Recurrentes y Etiquetas -->
+    <div class="management-section">
+      <h3>⚙️ Gestión de Planes Recurrentes y Etiquetas</h3>
+      <ul id="managementList" class="management-list">
+        <li style="color: var(--cafe-suave); font-size: 0.82rem;">Cargando lista...</li>
+      </ul>
+    </div>
   </div>
 
+  <!-- Modal Individual / Ambos -->
   <div class="modal" id="planModal">
     <div class="modal-content">
       <h3 id="modalTitle">Nuevo Plan</h3>
@@ -635,12 +609,30 @@
         <option value="15">15 minutos antes</option>
         <option value="60">1 hora antes</option>
         <option value="1440">1 día antes</option>
-        <option value="2880">2 días antes</option>
       </select>
 
       <div class="modal-buttons">
-        <button class="btn-cancel-modal" onclick="closeModal()">Cancelar</button>
+        <button class="btn-cancel-modal" onclick="closeModal('planModal')">Cancelar</button>
         <button class="btn-save-modal" onclick="savePlan()">Guardar 💾</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Etiqueta -->
+  <div class="modal" id="tagModal">
+    <div class="modal-content">
+      <h3>🏷️ Nueva Etiqueta para Días</h3>
+      <input type="text" id="tagTextInput" placeholder="Ej: Vacaciones, Viaje, Aniversario...">
+      <label style="font-size: 0.78rem; font-weight:300;">Color de Etiqueta:</label>
+      <select id="tagColorSelect">
+        <option value="#6f4e37">Marrón Tierra</option>
+        <option value="#b85b56">Rojo Aniversario</option>
+        <option value="#8fa382">Verde Oliva</option>
+        <option value="#7b5260">Morado Elegante</option>
+      </select>
+      <div class="modal-buttons">
+        <button class="btn-cancel-modal" onclick="closeModal('tagModal')">Cancelar</button>
+        <button class="btn-save-modal" onclick="saveTag()">Guardar Etiqueta 🏷️</button>
       </div>
     </div>
   </div>
@@ -664,6 +656,7 @@
     const database = firebase.database();
     const plansRef = database.ref('planes_v2');
     const postponedRef = database.ref('postergados_v2');
+    const tagsRef = database.ref('etiquetas_v2');
 
     let currentView = 'week';
     let currentStartOfWeek = getMonday(new Date());
@@ -671,8 +664,12 @@
     let selectedDayDate = new Date();
     let selectedPersonFilter = 'all';
     
+    let isMultiSelectActive = false;
+    let selectedDatesList = [];
+
     let allPlans = {};
     let allPostponed = {};
+    let allTags = {};
     let activeSlotInfo = null;
 
     const chileBaseHours = [
@@ -701,7 +698,7 @@
     function requestNotificationPermission() {
       if (!("Notification" in window)) return alert("Navegador no soporta notificaciones.");
       Notification.requestPermission().then(permission => {
-        if (permission === "granted") alert("¡Alertas activadas con éxito!");
+        if (permission === "granted") alert("¡Alertas activadas!");
       });
     }
 
@@ -709,7 +706,7 @@
       if (Notification.permission !== "granted") return;
       Object.keys(allPlans).forEach(key => {
         const p = allPlans[key];
-        if (p.notified || p.status !== 'pending') return;
+        if (p.notified || p.status !== 'pending' || p.hidden) return;
 
         const dateParts = p.date.split('-');
         const hourParts = p.hour.split(':');
@@ -765,15 +762,60 @@
       }
     }
 
+    // Escuchadores de Firebase
     plansRef.on('value', (snapshot) => {
       allPlans = snapshot.val() || {};
       renderCurrentView();
+      renderManagementList();
     });
 
     postponedRef.on('value', (snapshot) => {
       allPostponed = snapshot.val() || {};
       renderPostponed();
     });
+
+    tagsRef.on('value', (snapshot) => {
+      allTags = snapshot.val() || {};
+      renderCurrentView();
+      renderManagementList();
+    });
+
+    function toggleMultiSelectMode() {
+      isMultiSelectActive = !isMultiSelectActive;
+      selectedDatesList = [];
+      const btn = document.getElementById('btnToggleMulti');
+      
+      if (isMultiSelectActive) {
+        btn.classList.add('active');
+        btn.innerText = '✖ Cancelar Selección';
+        document.getElementById('btnGroupPlan').style.display = 'inline-block';
+        document.getElementById('btnGroupTag').style.display = 'inline-block';
+        document.getElementById('btnGroupDelete').style.display = 'inline-block';
+      } else {
+        btn.classList.remove('active');
+        btn.innerText = '☑️ Selección Múltiple';
+        document.getElementById('btnGroupPlan').style.display = 'none';
+        document.getElementById('btnGroupTag').style.display = 'none';
+        document.getElementById('btnGroupDelete').style.display = 'none';
+      }
+      renderCurrentView();
+    }
+
+    function handleCellClick(dateObj) {
+      const dateStr = formatDate(dateObj);
+      if (isMultiSelectActive) {
+        const index = selectedDatesList.indexOf(dateStr);
+        if (index > -1) {
+          selectedDatesList.splice(index, 1);
+        } else {
+          selectedDatesList.push(dateStr);
+        }
+        renderCurrentView();
+      } else {
+        selectedDayDate = dateObj;
+        switchView('day');
+      }
+    }
 
     function switchView(view) {
       currentView = view;
@@ -848,14 +890,16 @@
         const dateStr = formatDate(dateObj);
         const isAnniversary = (d === 20);
         const isTodayCell = isToday(dateObj);
+        const isSelectedMulti = selectedDatesList.includes(dateStr);
         const shiftInfo = getYeiderShift(dateObj);
         const dayPlans = getPlansForDate(dateStr);
+        const dayTags = getTagsForDate(dateStr);
         const dayOfWeek = dateObj.getDay(); 
         const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
 
         const cell = document.createElement('div');
-        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''}`;
-        cell.onclick = () => { selectedDayDate = dateObj; switchView('day'); };
+        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''} ${isSelectedMulti ? 'selected-multi' : ''}`;
+        cell.onclick = () => handleCellClick(dateObj);
 
         let dotsHTML = '<div class="plan-dots">';
         dayPlans.forEach(p => {
@@ -863,19 +907,24 @@
         });
         dotsHTML += '</div>';
 
+        let tagsHTML = '';
+        dayTags.forEach(t => {
+          tagsHTML += `<div class="custom-tag-item" style="background:${t.color}">${t.text}</div>`;
+        });
+
         cell.innerHTML = `
           <div class="cell-header">
             <span>${d} ${isAnniversary ? '💖' : ''}</span>
           </div>
           <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
           ${isNatalyClassDay ? '<span class="class-mini-tag">Clase Nata 📚</span>' : ''}
+          ${tagsHTML}
           ${dotsHTML}
         `;
         container.appendChild(cell);
       }
     }
 
-    /* VISTA SEMANAL REDISEÑADA A 3 FILAS (L-M, M-J, V-S-D) */
     function renderWeek() {
       const container = document.getElementById('weekContainer');
       container.className = 'week-container-3rows';
@@ -887,19 +936,16 @@
       document.getElementById('periodTitle').innerText = 
         `${currentStartOfWeek.getDate()} ${getMonthName(currentStartOfWeek.getMonth())} - ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())} ${endOfWeek.getFullYear()}`;
 
-      // Fila 1: Lunes (0) y Martes (1)
       const row1 = document.createElement('div');
       row1.className = 'week-row row-2';
       row1.appendChild(createWeekCell(0));
       row1.appendChild(createWeekCell(1));
 
-      // Fila 2: Miércoles (2) y Jueves (3)
       const row2 = document.createElement('div');
       row2.className = 'week-row row-2';
       row2.appendChild(createWeekCell(2));
       row2.appendChild(createWeekCell(3));
 
-      // Fila 3: Viernes (4), Sábado (5) y Domingo (6)
       const row3 = document.createElement('div');
       row3.className = 'week-row row-3';
       row3.appendChild(createWeekCell(4));
@@ -919,14 +965,16 @@
       const dayNum = dayDate.getDate();
       const isAnniversary = (dayNum === 20);
       const isTodayCell = isToday(dayDate);
+      const isSelectedMulti = selectedDatesList.includes(dateStr);
       const shiftInfo = getYeiderShift(dayDate);
       const dayPlans = getPlansForDate(dateStr);
+      const dayTags = getTagsForDate(dateStr);
       const dayOfWeek = dayDate.getDay();
       const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
 
       const cell = document.createElement('div');
-      cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''}`;
-      cell.onclick = () => { selectedDayDate = dayDate; switchView('day'); };
+      cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''} ${isSelectedMulti ? 'selected-multi' : ''}`;
+      cell.onclick = () => handleCellClick(dayDate);
 
       let dotsHTML = '<div class="plan-dots">';
       dayPlans.forEach(p => {
@@ -934,12 +982,18 @@
       });
       dotsHTML += '</div>';
 
+      let tagsHTML = '';
+      dayTags.forEach(t => {
+        tagsHTML += `<div class="custom-tag-item" style="background:${t.color}">${t.text}</div>`;
+      });
+
       cell.innerHTML = `
         <div class="cell-header">
           <span>${dayNames[dayIndex]} ${dayNum} ${isAnniversary ? '💖' : ''}</span>
         </div>
         <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
         ${isNatalyClassDay ? '<span class="class-mini-tag">Clase Nata 📚</span>' : ''}
+        ${tagsHTML}
         ${dotsHTML}
       `;
       return cell;
@@ -1095,7 +1149,7 @@
 
       Object.keys(allPlans).forEach(key => {
         const item = allPlans[key];
-        if (item.person === person && item.hour === hour && matchesRecurrence(item, dateStr)) {
+        if (!item.hidden && item.person === person && item.hour === hour && matchesRecurrence(item, dateStr)) {
           result.push({ ...item, key });
         }
       });
@@ -1113,7 +1167,18 @@
 
       Object.keys(allPlans).forEach(key => {
         const item = allPlans[key];
-        if (matchesRecurrence(item, dateStr)) {
+        if (!item.hidden && matchesRecurrence(item, dateStr)) {
+          result.push({ ...item, key });
+        }
+      });
+      return result;
+    }
+
+    function getTagsForDate(dateStr) {
+      const result = [];
+      Object.keys(allTags).forEach(key => {
+        const item = allTags[key];
+        if (item.date === dateStr) {
           result.push({ ...item, key });
         }
       });
@@ -1163,6 +1228,48 @@
       });
     }
 
+    function renderManagementList() {
+      const list = document.getElementById('managementList');
+      list.innerHTML = '';
+
+      let hasItems = false;
+
+      // Render Recurrent Plans
+      Object.keys(allPlans).forEach(key => {
+        const p = allPlans[key];
+        if (p.recurrence && p.recurrence !== 'none') {
+          hasItems = true;
+          const li = document.createElement('li');
+          li.className = 'management-item';
+          li.innerHTML = `
+            <span>🔁 Plan Recurrente: <b>${p.text}</b> (${p.recurrence}) - ${p.person.toUpperCase()}</span>
+            <div>
+              <button class="btn-icon" title="Ocultar/Mostrar" onclick="toggleHidePlan('${key}', ${p.hidden ? 'false' : 'true'})">${p.hidden ? '👁️ Mostrar' : '🙈 Ocultar'}</button>
+              <button class="btn-icon" title="Borrar Recurrencia" onclick="deletePlan('${key}')">🗑️ Eliminar</button>
+            </div>
+          `;
+          list.appendChild(li);
+        }
+      });
+
+      // Render Tags
+      Object.keys(allTags).forEach(key => {
+        const t = allTags[key];
+        hasItems = true;
+        const li = document.createElement('li');
+        li.className = 'management-item';
+        li.innerHTML = `
+          <span>🏷️ Etiqueta: <b style="color:${t.color}">${t.text}</b> (${t.date})</span>
+          <button class="btn-icon" title="Borrar Etiqueta" onclick="deleteTag('${key}')">🗑️ Eliminar</button>
+        `;
+        list.appendChild(li);
+      });
+
+      if (!hasItems) {
+        list.innerHTML = '<li style="color: var(--cafe-suave); font-size: 0.82rem;">No hay planes recurrentes ni etiquetas registradas.</li>';
+      }
+    }
+
     function openPlanModal(date, person, hour) {
       activeSlotInfo = { date, person, hour };
       document.getElementById('modalTitle').innerText = `Nuevo Plan (${hour})`;
@@ -1173,11 +1280,36 @@
       document.getElementById('planModal').style.display = 'flex';
     }
 
-    function closeModal() {
-      document.getElementById('planModal').style.display = 'none';
+    function openGroupPlanModal() {
+      if (selectedDatesList.length === 0) return alert("Selecciona al menos un día primero.");
+      activeSlotInfo = { date: selectedDatesList[0], person: 'yeider', hour: '09:00' };
+      document.getElementById('modalTitle').innerText = `Plan para ${selectedDatesList.length} Días Seleccionados`;
+      document.getElementById('planTextInput').value = '';
+      document.getElementById('planPersonAssign').value = 'both';
+      document.getElementById('planRecurrence').value = 'none';
+      document.getElementById('planAdvanceNotice').value = '0';
+      document.getElementById('planModal').style.display = 'flex';
     }
 
-    /* GUARDAR PLAN CON SINCRONIZACIÓN Y ZONA HORARIA AUTOMÁTICA */
+    function openTagModal() {
+      if (selectedDatesList.length === 0) return alert("Selecciona al menos un día primero.");
+      document.getElementById('tagTextInput').value = '';
+      document.getElementById('tagModal').style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function sendPushNotification(title, message) {
+      if (Notification.permission === "granted") {
+        new Notification(title, {
+          body: message,
+          icon: "https://i.imgur.com/SPBevo4.png"
+        });
+      }
+    }
+
     function savePlan() {
       const text = document.getElementById('planTextInput').value.trim();
       const assignOption = document.getElementById('planPersonAssign').value;
@@ -1186,42 +1318,96 @@
 
       if (!text) return alert('Escribe un texto para el plan.');
 
-      const diffHours = getTimeDifferenceHours(); // Diferencia Chile - Bolivia
+      const diffHours = getTimeDifferenceHours();
+      const datesToProcess = selectedDatesList.length > 0 ? [...selectedDatesList] : [activeSlotInfo.date];
 
-      const basePlan = {
-        date: activeSlotInfo.date,
-        text: text,
-        recurrence: recurrence,
-        advanceNotice: advanceNotice,
-        status: 'pending',
-        notified: false
-      };
+      datesToProcess.forEach(targetDate => {
+        const basePlan = {
+          date: targetDate,
+          text: text,
+          recurrence: recurrence,
+          advanceNotice: advanceNotice,
+          status: 'pending',
+          notified: false,
+          hidden: false
+        };
 
-      if (assignOption === 'both') {
-        // Calcular hora para Yeider y Nataly ajustado a su país
-        let yeiderHour = activeSlotInfo.hour;
-        let natalyHour = activeSlotInfo.hour;
+        if (assignOption === 'both') {
+          let yeiderHour = activeSlotInfo.hour;
+          let natalyHour = activeSlotInfo.hour;
 
-        if (activeSlotInfo.person === 'yeider') {
-          // Creado desde Chile -> Hora Nataly en Bolivia = -diffHours
-          natalyHour = formatHourOffset(yeiderHour, -diffHours);
+          if (activeSlotInfo.person === 'yeider') {
+            natalyHour = formatHourOffset(yeiderHour, -diffHours);
+          } else {
+            yeiderHour = formatHourOffset(natalyHour, diffHours);
+          }
+
+          plansRef.push({ ...basePlan, person: 'yeider', hour: yeiderHour });
+          plansRef.push({ ...basePlan, person: 'nataly', hour: natalyHour });
+
+        } else if (assignOption === 'yeider') {
+          plansRef.push({ ...basePlan, person: 'yeider', hour: activeSlotInfo.hour });
+        } else if (assignOption === 'nataly') {
+          plansRef.push({ ...basePlan, person: 'nataly', hour: activeSlotInfo.hour });
         } else {
-          // Creado desde Bolivia -> Hora Yeider en Chile = +diffHours
-          yeiderHour = formatHourOffset(natalyHour, diffHours);
+          plansRef.push({ ...basePlan, person: activeSlotInfo.person, hour: activeSlotInfo.hour });
         }
+      });
 
-        plansRef.push({ ...basePlan, person: 'yeider', hour: yeiderHour });
-        plansRef.push({ ...basePlan, person: 'nataly', hour: natalyHour });
-
-      } else if (assignOption === 'yeider') {
-        plansRef.push({ ...basePlan, person: 'yeider', hour: activeSlotInfo.hour });
-      } else if (assignOption === 'nataly') {
-        plansRef.push({ ...basePlan, person: 'nataly', hour: activeSlotInfo.hour });
+      // Notificaciones inmediatas de adición
+      if (assignOption === 'both') {
+        sendPushNotification("💑 Nuevo Plan Creado", `Se agregó un nuevo plan para ambos: "${text}"`);
+      } else if (assignOption === 'yeider' || activeSlotInfo.person === 'yeider') {
+        sendPushNotification("👦 Plan de Yeider", `Yeider agregó un nuevo plan: "${text}"`);
       } else {
-        plansRef.push({ ...basePlan, person: activeSlotInfo.person, hour: activeSlotInfo.hour });
+        sendPushNotification("👧 Plan de Nataly", `Nataly agregó un nuevo plan: "${text}"`);
       }
 
-      closeModal();
+      closeModal('planModal');
+      if (isMultiSelectActive) toggleMultiSelectMode();
+    }
+
+    function saveTag() {
+      const text = document.getElementById('tagTextInput').value.trim();
+      const color = document.getElementById('tagColorSelect').value;
+      if (!text) return alert('Escribe el nombre de la etiqueta.');
+
+      selectedDatesList.forEach(targetDate => {
+        tagsRef.push({
+          date: targetDate,
+          text: text,
+          color: color
+        });
+      });
+
+      closeModal('tagModal');
+      toggleMultiSelectMode();
+    }
+
+    function deleteSelectedDaysData() {
+      if (selectedDatesList.length === 0) return;
+      if (!confirm(`¿Estás seguro de borrar todos los planes y etiquetas de los ${selectedDatesList.length} días seleccionados?`)) return;
+
+      selectedDatesList.forEach(targetDate => {
+        // Borrar planes de esos días
+        Object.keys(allPlans).forEach(key => {
+          if (allPlans[key].date === targetDate && !key.startsWith('class_default_')) {
+            plansRef.child(key).remove();
+          }
+        });
+        // Borrar etiquetas de esos días
+        Object.keys(allTags).forEach(key => {
+          if (allTags[key].date === targetDate) {
+            tagsRef.child(key).remove();
+          }
+        });
+      });
+
+      toggleMultiSelectMode();
+    }
+
+    function toggleHidePlan(key, hideState) {
+      plansRef.child(key).update({ hidden: hideState });
     }
 
     function setPlanStatus(key, status) {
@@ -1232,6 +1418,10 @@
     function deletePlan(key) {
       if (key.startsWith('class_default_')) return;
       plansRef.child(key).remove();
+    }
+
+    function deleteTag(key) {
+      tagsRef.child(key).remove();
     }
 
     function postponePlan(key, text) {
