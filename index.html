@@ -7,7 +7,7 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/SPBevo4.png">
   <link rel="apple-touch-icon" href="https://i.imgur.com/SPBevo4.png">
-  <!-- Tipografía Montserrat ExtraLight (pesos 200, 300, 400) estilo Canva -->
+  <!-- Tipografía Montserrat ExtraLight (pesos 200, 300, 400) -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -161,12 +161,33 @@
       text-align: center;
     }
 
-    /* GRIDS DE MES Y SEMANA EXTENDIDOS */
-    .month-grid, .week-grid {
+    /* GRID MES COMPLETO (7 columnas) */
+    .month-grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(44px, 1fr));
       gap: 5px;
       width: 100%;
+    }
+
+    /* GRID SEMANAL REDISEÑADO A 3 FILAS */
+    .week-container-3rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .week-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .week-row.row-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .week-row.row-3 {
+      grid-template-columns: repeat(3, 1fr);
     }
 
     .grid-header-day {
@@ -180,9 +201,9 @@
     .calendar-cell {
       background: var(--blanco);
       border: 1px solid var(--beige-mediano);
-      border-radius: 12px;
-      min-height: 125px; /* Marcos más altos y extendidos hacia abajo */
-      padding: 6px;
+      border-radius: 14px;
+      min-height: 125px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -197,7 +218,7 @@
       transform: translateY(-2px);
     }
 
-    /* Resaltado para el día actual (HOY) */
+    /* Resaltado del día actual (HOY) */
     .calendar-cell.is-today {
       border: 2px solid var(--gold-hoy) !important;
       background: #fffdf8 !important;
@@ -226,7 +247,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       font-weight: 400;
     }
 
@@ -236,11 +257,11 @@
     }
 
     .shift-mini-tag {
-      font-size: 0.62rem;
-      padding: 2px 4px;
+      font-size: 0.65rem;
+      padding: 3px 6px;
       border-radius: 6px;
       font-weight: 300;
-      margin-top: 3px;
+      margin-top: 4px;
       text-align: center;
       display: block;
       white-space: nowrap;
@@ -249,8 +270,8 @@
     }
 
     .class-mini-tag {
-      font-size: 0.6rem;
-      padding: 2px 4px;
+      font-size: 0.62rem;
+      padding: 3px 6px;
       border-radius: 6px;
       font-weight: 300;
       margin-top: 3px;
@@ -269,22 +290,21 @@
 
     .plan-dots {
       display: flex;
-      gap: 3px;
+      gap: 4px;
       flex-wrap: wrap;
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
     .dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
     }
 
     .dot.yeider { background-color: var(--cafe-oscuro); }
     .dot.nataly { background-color: var(--aniversario); }
-    .dot.both { background-color: var(--gold-hoy); }
 
-    /* ESTILOS VISTA DIA A DIA MÓVIL */
+    /* ESTILOS VISTA DIA A DIA */
     .day-card {
       background: var(--blanco);
       border: 1.5px solid var(--beige-mediano);
@@ -548,6 +568,7 @@
     @media (max-width: 600px) {
       .day-columns { grid-template-columns: 1fr; }
       .person-column { border-bottom: 1px solid var(--beige-mediano); }
+      .week-row.row-3 { grid-template-columns: 1fr 1fr 1fr; }
     }
   </style>
 </head>
@@ -594,10 +615,10 @@
       
       <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Asignar a / Para quién:</label>
       <select id="planPersonAssign">
-        <option value="selected">Solo para la columna actual</option>
         <option value="both">💑 Para Ambos (Yeider & Nataly)</option>
-        <option value="yeider">👦 Yeider</option>
-        <option value="nataly">👧 Nataly</option>
+        <option value="selected">Solo para la persona actual</option>
+        <option value="yeider">👦 Solo Yeider</option>
+        <option value="nataly">👧 Solo Nataly</option>
       </select>
 
       <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Repetición:</label>
@@ -784,7 +805,7 @@
         document.getElementById('monthContainer').style.display = 'grid';
         renderMonth();
       } else if (currentView === 'week') {
-        document.getElementById('weekContainer').style.display = 'grid';
+        document.getElementById('weekContainer').style.display = 'flex';
         renderWeek();
       } else if (currentView === 'day') {
         document.getElementById('dayContainer').style.display = 'block';
@@ -854,9 +875,10 @@
       }
     }
 
+    /* VISTA SEMANAL REDISEÑADA A 3 FILAS (L-M, M-J, V-S-D) */
     function renderWeek() {
       const container = document.getElementById('weekContainer');
-      container.className = 'week-grid';
+      container.className = 'week-container-3rows';
       container.innerHTML = '';
 
       const endOfWeek = new Date(currentStartOfWeek);
@@ -865,47 +887,62 @@
       document.getElementById('periodTitle').innerText = 
         `${currentStartOfWeek.getDate()} ${getMonthName(currentStartOfWeek.getMonth())} - ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())} ${endOfWeek.getFullYear()}`;
 
-      const headers = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-      headers.forEach(h => {
-        const div = document.createElement('div');
-        div.className = 'grid-header-day';
-        div.innerText = h;
-        container.appendChild(div);
+      // Fila 1: Lunes (0) y Martes (1)
+      const row1 = document.createElement('div');
+      row1.className = 'week-row row-2';
+      row1.appendChild(createWeekCell(0));
+      row1.appendChild(createWeekCell(1));
+
+      // Fila 2: Miércoles (2) y Jueves (3)
+      const row2 = document.createElement('div');
+      row2.className = 'week-row row-2';
+      row2.appendChild(createWeekCell(2));
+      row2.appendChild(createWeekCell(3));
+
+      // Fila 3: Viernes (4), Sábado (5) y Domingo (6)
+      const row3 = document.createElement('div');
+      row3.className = 'week-row row-3';
+      row3.appendChild(createWeekCell(4));
+      row3.appendChild(createWeekCell(5));
+      row3.appendChild(createWeekCell(6));
+
+      container.appendChild(row1);
+      container.appendChild(row2);
+      container.appendChild(row3);
+    }
+
+    function createWeekCell(dayIndex) {
+      const dayDate = new Date(currentStartOfWeek);
+      dayDate.setDate(dayDate.getDate() + dayIndex);
+
+      const dateStr = formatDate(dayDate);
+      const dayNum = dayDate.getDate();
+      const isAnniversary = (dayNum === 20);
+      const isTodayCell = isToday(dayDate);
+      const shiftInfo = getYeiderShift(dayDate);
+      const dayPlans = getPlansForDate(dateStr);
+      const dayOfWeek = dayDate.getDay();
+      const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
+
+      const cell = document.createElement('div');
+      cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''}`;
+      cell.onclick = () => { selectedDayDate = dayDate; switchView('day'); };
+
+      let dotsHTML = '<div class="plan-dots">';
+      dayPlans.forEach(p => {
+        dotsHTML += `<div class="dot ${p.person}" title="${p.text}"></div>`;
       });
+      dotsHTML += '</div>';
 
-      for (let i = 0; i < 7; i++) {
-        const dayDate = new Date(currentStartOfWeek);
-        dayDate.setDate(dayDate.getDate() + i);
-
-        const dateStr = formatDate(dayDate);
-        const dayNum = dayDate.getDate();
-        const isAnniversary = (dayNum === 20);
-        const isTodayCell = isToday(dayDate);
-        const shiftInfo = getYeiderShift(dayDate);
-        const dayPlans = getPlansForDate(dateStr);
-        const dayOfWeek = dayDate.getDay();
-        const isNatalyClassDay = (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6);
-
-        const cell = document.createElement('div');
-        cell.className = `calendar-cell ${isAnniversary ? 'anniversary' : ''} ${isTodayCell ? 'is-today' : ''}`;
-        cell.onclick = () => { selectedDayDate = dayDate; switchView('day'); };
-
-        let dotsHTML = '<div class="plan-dots">';
-        dayPlans.forEach(p => {
-          dotsHTML += `<div class="dot ${p.person}" title="${p.text}"></div>`;
-        });
-        dotsHTML += '</div>';
-
-        cell.innerHTML = `
-          <div class="cell-header">
-            <span>${dayNum} ${isAnniversary ? '💖' : ''}</span>
-          </div>
-          <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
-          ${isNatalyClassDay ? '<span class="class-mini-tag">Clase Nata 📚</span>' : ''}
-          ${dotsHTML}
-        `;
-        container.appendChild(cell);
-      }
+      cell.innerHTML = `
+        <div class="cell-header">
+          <span>${dayNames[dayIndex]} ${dayNum} ${isAnniversary ? '💖' : ''}</span>
+        </div>
+        <span class="shift-mini-tag ${shiftInfo.class}">${shiftInfo.text}</span>
+        ${isNatalyClassDay ? '<span class="class-mini-tag">Clase Nata 📚</span>' : ''}
+        ${dotsHTML}
+      `;
+      return cell;
     }
 
     function renderDayByDay() {
@@ -1130,7 +1167,7 @@
       activeSlotInfo = { date, person, hour };
       document.getElementById('modalTitle').innerText = `Nuevo Plan (${hour})`;
       document.getElementById('planTextInput').value = '';
-      document.getElementById('planPersonAssign').value = 'selected';
+      document.getElementById('planPersonAssign').value = 'both';
       document.getElementById('planRecurrence').value = 'none';
       document.getElementById('planAdvanceNotice').value = '0';
       document.getElementById('planModal').style.display = 'flex';
@@ -1140,6 +1177,7 @@
       document.getElementById('planModal').style.display = 'none';
     }
 
+    /* GUARDAR PLAN CON SINCRONIZACIÓN Y ZONA HORARIA AUTOMÁTICA */
     function savePlan() {
       const text = document.getElementById('planTextInput').value.trim();
       const assignOption = document.getElementById('planPersonAssign').value;
@@ -1148,9 +1186,10 @@
 
       if (!text) return alert('Escribe un texto para el plan.');
 
+      const diffHours = getTimeDifferenceHours(); // Diferencia Chile - Bolivia
+
       const basePlan = {
         date: activeSlotInfo.date,
-        hour: activeSlotInfo.hour,
         text: text,
         recurrence: recurrence,
         advanceNotice: advanceNotice,
@@ -1159,12 +1198,27 @@
       };
 
       if (assignOption === 'both') {
-        plansRef.push({ ...basePlan, person: 'yeider' });
-        plansRef.push({ ...basePlan, person: 'nataly' });
-      } else if (assignOption === 'yeider' || assignOption === 'nataly') {
-        plansRef.push({ ...basePlan, person: assignOption });
+        // Calcular hora para Yeider y Nataly ajustado a su país
+        let yeiderHour = activeSlotInfo.hour;
+        let natalyHour = activeSlotInfo.hour;
+
+        if (activeSlotInfo.person === 'yeider') {
+          // Creado desde Chile -> Hora Nataly en Bolivia = -diffHours
+          natalyHour = formatHourOffset(yeiderHour, -diffHours);
+        } else {
+          // Creado desde Bolivia -> Hora Yeider en Chile = +diffHours
+          yeiderHour = formatHourOffset(natalyHour, diffHours);
+        }
+
+        plansRef.push({ ...basePlan, person: 'yeider', hour: yeiderHour });
+        plansRef.push({ ...basePlan, person: 'nataly', hour: natalyHour });
+
+      } else if (assignOption === 'yeider') {
+        plansRef.push({ ...basePlan, person: 'yeider', hour: activeSlotInfo.hour });
+      } else if (assignOption === 'nataly') {
+        plansRef.push({ ...basePlan, person: 'nataly', hour: activeSlotInfo.hour });
       } else {
-        plansRef.push({ ...basePlan, person: activeSlotInfo.person });
+        plansRef.push({ ...basePlan, person: activeSlotInfo.person, hour: activeSlotInfo.hour });
       }
 
       closeModal();
