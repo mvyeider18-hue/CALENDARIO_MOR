@@ -16,10 +16,28 @@
       --cafe-suave: #8c6d58;
       --cafe-tierra: #6f4e37;
       --cafe-oscuro: #3e2723;
+      --texto-principal: #3e2723;
       --blanco: #ffffff;
       --gold-hoy: #d4af37;
       --aniversario: #b85b56;
       --morado-clase: #7b5260;
+      --sombra: rgba(62, 39, 35, 0.12);
+    }
+
+    /* Estilos Modo Oscuro */
+    body.dark-mode {
+      --fondo-body: #1c1917;
+      --card-bg: #292524;
+      --beige-mediano: #44403c;
+      --cafe-suave: #a8a29e;
+      --cafe-tierra: #d6d3d1;
+      --cafe-oscuro: #f5f5f4;
+      --texto-principal: #e7e5e4;
+      --blanco: #1c1917;
+      --gold-hoy: #fbbf24;
+      --aniversario: #f87171;
+      --morado-clase: #a855f7;
+      --sombra: rgba(0, 0, 0, 0.5);
     }
 
     * { box-sizing: border-box; }
@@ -28,11 +46,12 @@
       font-family: 'Montserrat', sans-serif;
       font-weight: 200;
       background-color: var(--fondo-body);
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       margin: 0;
       padding: 8px;
       position: relative;
       min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -44,7 +63,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: min(340px, 82vw);
-      opacity: 0.16;
+      opacity: 0.14;
       pointer-events: none;
       z-index: 0;
     }
@@ -52,11 +71,11 @@
     .container {
       max-width: 1000px;
       margin: 0 auto;
-      background: rgba(250, 246, 240, 0.93);
+      background: var(--card-bg);
       backdrop-filter: blur(8px);
       border-radius: 24px;
       padding: 14px;
-      box-shadow: 0 12px 32px rgba(62, 39, 35, 0.12);
+      box-shadow: 0 12px 32px var(--sombra);
       position: relative;
       z-index: 1;
       overflow-x: auto;
@@ -68,6 +87,7 @@
       border-bottom: 1px solid var(--beige-mediano);
       padding-bottom: 12px;
       margin-bottom: 12px;
+      position: relative;
     }
 
     header h1 {
@@ -78,6 +98,20 @@
       color: var(--cafe-tierra);
       margin: 0;
       text-transform: uppercase;
+    }
+
+    .theme-toggle-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--beige-mediano);
+      color: var(--texto-principal);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .time-zones {
@@ -96,8 +130,7 @@
       padding: 5px 12px;
       border-radius: 18px;
       border: 1px solid var(--beige-mediano);
-      color: var(--cafe-oscuro);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      color: var(--texto-principal);
     }
 
     .view-selector {
@@ -113,7 +146,7 @@
       font-weight: 300;
       background: var(--blanco);
       border: 1px solid var(--beige-mediano);
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       padding: 7px 13px;
       border-radius: 18px;
       font-size: 0.8rem;
@@ -127,7 +160,6 @@
       border-color: var(--cafe-tierra);
     }
 
-    /* Barra de Multiselección */
     .multi-select-bar {
       display: flex;
       justify-content: center;
@@ -144,7 +176,7 @@
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       background: var(--beige-mediano);
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       border: none;
       padding: 6px 12px;
       border-radius: 12px;
@@ -174,13 +206,12 @@
       border-radius: 20px;
       font-size: 0.82rem;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(111, 78, 55, 0.25);
     }
 
     #periodTitle {
       font-size: 0.95rem;
       font-weight: 400;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       text-align: center;
     }
 
@@ -221,18 +252,16 @@
       justify-content: space-between;
       cursor: pointer;
       transition: all 0.2s;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       position: relative;
     }
 
     .calendar-cell.selected-multi {
       border: 2px solid var(--cafe-tierra) !important;
-      background: #f1e9e0 !important;
     }
 
     .calendar-cell.is-today {
       border: 2px solid var(--gold-hoy) !important;
-      background: #fffdf8 !important;
     }
 
     .calendar-cell.is-today::after {
@@ -249,8 +278,7 @@
     }
 
     .calendar-cell.other-month {
-      background: rgba(255, 255, 255, 0.4);
-      opacity: 0.45;
+      opacity: 0.35;
     }
 
     .cell-header {
@@ -263,7 +291,6 @@
 
     .calendar-cell.anniversary {
       border: 1.5px solid var(--aniversario);
-      background: #fff8f7;
     }
 
     .shift-mini-tag {
@@ -304,27 +331,33 @@
       text-overflow: ellipsis;
     }
 
-    .shift-day { background: #e6c896; color: var(--cafe-oscuro); }
-    .shift-night { background: var(--cafe-oscuro); color: #ffffff; }
+    .shift-day { background: #e6c896; color: #3e2723; }
+    .shift-night { background: #3e2723; color: #ffffff; }
     .shift-rest { background: #8fa382; color: #ffffff; }
 
     .plan-dots {
       display: flex;
-      gap: 4px;
+      gap: 5px;
       flex-wrap: wrap;
       margin-top: 5px;
     }
 
     .dot {
-      width: 7px;
-      height: 7px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.15s;
     }
 
-    .dot.yeider { background-color: var(--cafe-oscuro); }
+    .dot:hover {
+      transform: scale(1.4);
+    }
+
+    .dot.yeider { background-color: var(--cafe-tierra); }
     .dot.nataly { background-color: var(--aniversario); }
 
-    /* ESTILOS VISTA DIA A DIA */
+    /* VISTA DIA A DIA */
     .day-card {
       background: var(--blanco);
       border: 1.5px solid var(--beige-mediano);
@@ -333,7 +366,7 @@
     }
 
     .day-card.is-today { border: 2px solid var(--gold-hoy); }
-    .day-card.anniversary { border: 2px solid var(--aniversario); background: #fff8f7; }
+    .day-card.anniversary { border: 2px solid var(--aniversario); }
 
     .day-header {
       background: var(--cafe-tierra);
@@ -359,7 +392,7 @@
       margin-bottom: 8px;
     }
 
-    .person-header.yeider { color: var(--cafe-oscuro); }
+    .person-header.yeider { color: var(--cafe-tierra); }
     .person-header.nataly { color: var(--aniversario); }
 
     .day-by-day-controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
@@ -375,7 +408,7 @@
       font-size: 0.8rem;
       cursor: pointer;
       white-space: nowrap;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
     }
 
     .day-pill.active { background: var(--cafe-tierra); color: var(--blanco); border-color: var(--cafe-tierra); }
@@ -392,10 +425,10 @@
       border-radius: 10px;
       font-size: 0.78rem;
       cursor: pointer;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
     }
 
-    .filter-btn.active { background: var(--cafe-oscuro); color: var(--blanco); }
+    .filter-btn.active { background: var(--cafe-tierra); color: var(--blanco); }
 
     .hour-slot {
       display: flex;
@@ -406,6 +439,12 @@
       padding: 6px;
       border-radius: 10px;
       border-left: 3px solid var(--cafe-suave);
+      transition: background-color 0.4s;
+    }
+
+    .hour-slot.highlight-slot {
+      background: #fef9c3 !important;
+      border-left-color: var(--gold-hoy) !important;
     }
 
     .hour-time {
@@ -417,7 +456,7 @@
       gap: 4px;
     }
 
-    .hour-time .sec-time { font-size: 0.68rem; font-weight: 200; color: var(--cafe-oscuro); opacity: 0.75; }
+    .hour-time .sec-time { font-size: 0.68rem; font-weight: 200; color: var(--texto-principal); opacity: 0.75; }
 
     .plan-item {
       background: var(--blanco);
@@ -428,7 +467,7 @@
       justify-content: space-between;
       align-items: center;
       font-size: 0.8rem;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
     }
 
     .plan-item.completed { text-decoration: line-through; background: #eef5ec; color: #388e3c; }
@@ -445,27 +484,33 @@
       width: 100%;
       padding: 5px;
       border-radius: 6px;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       font-size: 0.72rem;
       cursor: pointer;
     }
 
-    .postponed-section, .management-section {
-      margin-top: 22px;
+    .postponed-section, .management-section, .expired-section {
+      margin-top: 20px;
       background: var(--blanco);
       border: 1.5px dashed var(--cafe-suave);
       border-radius: 16px;
       padding: 12px;
     }
 
-    .postponed-section h3, .management-section h3 {
+    .expired-section {
+      border-color: #ef4444;
+    }
+
+    .postponed-section h3, .management-section h3, .expired-section h3 {
       margin-top: 0;
       color: var(--cafe-tierra);
       font-size: 0.92rem;
       font-weight: 300;
     }
 
-    .postponed-list, .management-list {
+    .expired-section h3 { color: #dc2626; }
+
+    .postponed-list, .management-list, .expired-list {
       list-style: none;
       padding: 0;
       margin: 0;
@@ -474,7 +519,7 @@
       gap: 6px;
     }
 
-    .postponed-item, .management-item {
+    .postponed-item, .management-item, .expired-item {
       background: var(--card-bg);
       padding: 8px;
       border-radius: 8px;
@@ -482,7 +527,7 @@
       justify-content: space-between;
       align-items: center;
       font-size: 0.82rem;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       border: 1px solid var(--beige-mediano);
     }
 
@@ -490,7 +535,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(62, 39, 35, 0.65);
+      background: rgba(0, 0, 0, 0.65);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -503,7 +548,7 @@
       border-radius: 18px;
       width: 100%;
       max-width: 380px;
-      color: var(--cafe-oscuro);
+      color: var(--texto-principal);
       border: 1px solid var(--beige-mediano);
     }
 
@@ -517,11 +562,12 @@
       border: 1px solid var(--beige-mediano);
       font-size: 0.85rem;
       background: var(--blanco);
+      color: var(--texto-principal);
     }
 
     .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
     .btn-save-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--cafe-tierra); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
-    .btn-cancel-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--beige-mediano); color: var(--cafe-oscuro); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+    .btn-cancel-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--beige-mediano); color: var(--texto-principal); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
 
     @media (max-width: 600px) {
       .day-columns { grid-template-columns: 1fr; }
@@ -533,6 +579,7 @@
 
   <div class="container">
     <header>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙 Oscuro</button>
       <h1>YEIDER & NATALY ❤️</h1>
       <div class="time-zones">
         <div class="time-badge">🇧🇴 Bolivia: <span id="timeBolivia">--:--</span></div>
@@ -544,7 +591,7 @@
       <button class="btn-view" onclick="switchView('month')">📅 Mes Completo</button>
       <button class="btn-view active" onclick="switchView('week')">📆 Semanal</button>
       <button class="btn-view" onclick="switchView('day')">☀️ Día a Día</button>
-      <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--cafe-tierra); color:white; border:none;">🔔 Alertas</button>
+      <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--cafe-tierra); color:white; border:none;">🔔 Activar Notificaciones</button>
     </div>
 
     <!-- Barra de Selección Múltiple -->
@@ -564,6 +611,14 @@
     <div id="monthContainer" style="display: none;"></div>
     <div id="weekContainer" style="display: none;"></div>
     <div id="dayContainer" style="display: none;"></div>
+
+    <!-- Sección de Planes Vencidos / No Tiqueados -->
+    <div class="expired-section">
+      <h3>⚠️ Planes Pasados Sin Tiquear</h3>
+      <ul id="expiredList" class="expired-list">
+        <li style="color: var(--cafe-suave); font-size: 0.82rem;">No hay planes vencidos pendientes.</li>
+      </ul>
+    </div>
 
     <div class="postponed-section">
       <h3>📌 Planes Pendientes / Aplazados</h3>
@@ -590,7 +645,6 @@
       <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Asignar a / Para quién:</label>
       <select id="planPersonAssign">
         <option value="both">💑 Para Ambos (Yeider & Nataly)</option>
-        <option value="selected">Solo para la persona actual</option>
         <option value="yeider">👦 Solo Yeider</option>
         <option value="nataly">👧 Solo Nataly</option>
       </select>
@@ -663,6 +717,7 @@
     let currentMonthDate = new Date();
     let selectedDayDate = new Date();
     let selectedPersonFilter = 'all';
+    let targetScrollSlot = null;
     
     let isMultiSelectActive = false;
     let selectedDatesList = [];
@@ -678,6 +733,18 @@
       "20:00", "21:00", "22:00", "23:00"
     ];
     const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      document.getElementById('themeBtn').innerText = isDark ? '☀️ Claro' : '🌙 Oscuro';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.getElementById('themeBtn').innerText = '☀️ Claro';
+    }
 
     function isToday(dateObj) {
       const today = new Date();
@@ -696,10 +763,25 @@
     updateClocks();
 
     function requestNotificationPermission() {
-      if (!("Notification" in window)) return alert("Navegador no soporta notificaciones.");
+      if (!("Notification" in window)) return alert("Este navegador no admite notificaciones.");
       Notification.requestPermission().then(permission => {
-        if (permission === "granted") alert("¡Alertas activadas!");
+        if (permission === "granted") {
+          alert("¡Notificaciones activadas correctamente en tu móvil!");
+          sendPushNotification("❤️ Notificaciones Activas", "A partir de ahora recibirás alertas de tus planes.");
+        }
       });
+    }
+
+    function sendPushNotification(title, message) {
+      if ("vibrate" in navigator) navigator.vibrate([200, 100, 200]);
+      if (Notification.permission === "granted") {
+        new Notification(title, {
+          body: message,
+          icon: "https://i.imgur.com/SPBevo4.png",
+          badge: "https://i.imgur.com/SPBevo4.png",
+          vibrate: [200, 100, 200]
+        });
+      }
     }
 
     function checkNotifications(now) {
@@ -716,10 +798,7 @@
         const notifyTime = new Date(eventTime.getTime() - (advanceMin * 60 * 1000));
 
         if (now >= notifyTime && now < eventTime) {
-          new Notification("❤️ Recordatorio Plan", {
-            body: `${p.text} (${p.person.toUpperCase()}) a las ${p.hour}`,
-            icon: "https://i.imgur.com/SPBevo4.png"
-          });
+          sendPushNotification("⏰ Recordatorio de Plan", `${p.text} (${p.person.toUpperCase()}) - ${p.hour}`);
           plansRef.child(key).update({ notified: true });
         }
       });
@@ -762,11 +841,11 @@
       }
     }
 
-    // Escuchadores de Firebase
     plansRef.on('value', (snapshot) => {
       allPlans = snapshot.val() || {};
       renderCurrentView();
       renderManagementList();
+      renderExpiredList();
     });
 
     postponedRef.on('value', (snapshot) => {
@@ -815,6 +894,13 @@
         selectedDayDate = dateObj;
         switchView('day');
       }
+    }
+
+    function goToPlanSlot(event, dateStr, hour, person) {
+      event.stopPropagation(); // Evita conflicto de clicks
+      selectedDayDate = new Date(dateStr + 'T00:00:00');
+      targetScrollSlot = `slot_${person}_${hour}`;
+      switchView('day');
     }
 
     function switchView(view) {
@@ -903,7 +989,7 @@
 
         let dotsHTML = '<div class="plan-dots">';
         dayPlans.forEach(p => {
-          dotsHTML += `<div class="dot ${p.person}" title="${p.text}"></div>`;
+          dotsHTML += `<div class="dot ${p.person}" title="${p.text} (${p.hour})" onclick="goToPlanSlot(event, '${dateStr}', '${p.hour}', '${p.person}')"></div>`;
         });
         dotsHTML += '</div>';
 
@@ -978,7 +1064,7 @@
 
       let dotsHTML = '<div class="plan-dots">';
       dayPlans.forEach(p => {
-        dotsHTML += `<div class="dot ${p.person}" title="${p.text}"></div>`;
+        dotsHTML += `<div class="dot ${p.person}" title="${p.text} (${p.hour})" onclick="goToPlanSlot(event, '${dateStr}', '${p.hour}', '${p.person}')"></div>`;
       });
       dotsHTML += '</div>';
 
@@ -1072,6 +1158,19 @@
 
       container.appendChild(controlsWrapper);
       container.appendChild(dayCard);
+
+      // Auto scroll al slot de hora si viene de un puntito
+      if (targetScrollSlot) {
+        setTimeout(() => {
+          const slotElem = document.getElementById(targetScrollSlot);
+          if (slotElem) {
+            slotElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            slotElem.classList.add('highlight-slot');
+            setTimeout(() => slotElem.classList.remove('highlight-slot'), 2000);
+          }
+          targetScrollSlot = null;
+        }, 150);
+      }
     }
 
     function selectDayFromSlider(dateStr) {
@@ -1116,8 +1215,10 @@
           </div>
         `).join('');
 
+        const slotId = `slot_${person}_${slotHourKey}`;
+
         return `
-          <div class="hour-slot">
+          <div class="hour-slot" id="${slotId}">
             <div class="hour-time">
               <span>⏰ ${primaryTimeText}</span>
               <span class="sec-time">${secondaryTimeText}</span>
@@ -1162,7 +1263,7 @@
       const dayOfWeek = d.getDay();
 
       if (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6) {
-        result.push({ person: 'nataly', text: 'Clase Nataly 📚' });
+        result.push({ person: 'nataly', text: 'Clase Nataly 📚', hour: '19:00' });
       }
 
       Object.keys(allPlans).forEach(key => {
@@ -1206,6 +1307,45 @@
       return false;
     }
 
+    function renderExpiredList() {
+      const list = document.getElementById('expiredList');
+      list.innerHTML = '';
+
+      const now = new Date();
+      const todayStr = formatDate(now);
+      let expiredCount = 0;
+
+      Object.keys(allPlans).forEach(key => {
+        const p = allPlans[key];
+        if (p.status === 'pending' && !p.hidden && !key.startsWith('class_default_')) {
+          if (p.date < todayStr) {
+            expiredCount++;
+            const li = document.createElement('li');
+            li.className = 'expired-item';
+            li.innerHTML = `
+              <span>⚠️ <b>${p.text}</b> (${p.date} - ${p.hour}) - ${p.person.toUpperCase()}</span>
+              <div>
+                <button class="btn-icon" title="Marcar Realizado" onclick="setPlanStatus('${key}', 'completed')">✔</button>
+                <button class="btn-icon" title="Marcar No Realizado" onclick="setPlanStatus('${key}', 'failed')">❌</button>
+                <button class="btn-icon" title="Reasignar a Hoy" onclick="reassignPlanToToday('${key}')">📅 Hoy</button>
+                <button class="btn-icon" title="Eliminar" onclick="deletePlan('${key}')">🗑️</button>
+              </div>
+            `;
+            list.appendChild(li);
+          }
+        }
+      });
+
+      if (expiredCount === 0) {
+        list.innerHTML = '<li style="color: var(--cafe-suave); font-size: 0.82rem;">No hay planes vencidos pendientes.</li>';
+      }
+    }
+
+    function reassignPlanToToday(key) {
+      const todayStr = formatDate(new Date());
+      plansRef.child(key).update({ date: todayStr });
+    }
+
     function renderPostponed() {
       const list = document.getElementById('postponedList');
       list.innerHTML = '';
@@ -1234,7 +1374,6 @@
 
       let hasItems = false;
 
-      // Render Recurrent Plans
       Object.keys(allPlans).forEach(key => {
         const p = allPlans[key];
         if (p.recurrence && p.recurrence !== 'none') {
@@ -1242,17 +1381,16 @@
           const li = document.createElement('li');
           li.className = 'management-item';
           li.innerHTML = `
-            <span>🔁 Plan Recurrente: <b>${p.text}</b> (${p.recurrence}) - ${p.person.toUpperCase()}</span>
+            <span>🔁 Recurrente: <b>${p.text}</b> (${p.recurrence}) - ${p.person.toUpperCase()}</span>
             <div>
-              <button class="btn-icon" title="Ocultar/Mostrar" onclick="toggleHidePlan('${key}', ${p.hidden ? 'false' : 'true'})">${p.hidden ? '👁️ Mostrar' : '🙈 Ocultar'}</button>
-              <button class="btn-icon" title="Borrar Recurrencia" onclick="deletePlan('${key}')">🗑️ Eliminar</button>
+              <button class="btn-icon" onclick="toggleHidePlan('${key}', ${p.hidden ? 'false' : 'true'})">${p.hidden ? '👁️ Mostrar' : '🙈 Ocultar'}</button>
+              <button class="btn-icon" onclick="deletePlan('${key}')">🗑️ Eliminar</button>
             </div>
           `;
           list.appendChild(li);
         }
       });
 
-      // Render Tags
       Object.keys(allTags).forEach(key => {
         const t = allTags[key];
         hasItems = true;
@@ -1260,7 +1398,7 @@
         li.className = 'management-item';
         li.innerHTML = `
           <span>🏷️ Etiqueta: <b style="color:${t.color}">${t.text}</b> (${t.date})</span>
-          <button class="btn-icon" title="Borrar Etiqueta" onclick="deleteTag('${key}')">🗑️ Eliminar</button>
+          <button class="btn-icon" onclick="deleteTag('${key}')">🗑️ Eliminar</button>
         `;
         list.appendChild(li);
       });
@@ -1299,15 +1437,6 @@
 
     function closeModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
-    }
-
-    function sendPushNotification(title, message) {
-      if (Notification.permission === "granted") {
-        new Notification(title, {
-          body: message,
-          icon: "https://i.imgur.com/SPBevo4.png"
-        });
-      }
     }
 
     function savePlan() {
@@ -1349,15 +1478,12 @@
           plansRef.push({ ...basePlan, person: 'yeider', hour: activeSlotInfo.hour });
         } else if (assignOption === 'nataly') {
           plansRef.push({ ...basePlan, person: 'nataly', hour: activeSlotInfo.hour });
-        } else {
-          plansRef.push({ ...basePlan, person: activeSlotInfo.person, hour: activeSlotInfo.hour });
         }
       });
 
-      // Notificaciones inmediatas de adición
       if (assignOption === 'both') {
         sendPushNotification("💑 Nuevo Plan Creado", `Se agregó un nuevo plan para ambos: "${text}"`);
-      } else if (assignOption === 'yeider' || activeSlotInfo.person === 'yeider') {
+      } else if (assignOption === 'yeider') {
         sendPushNotification("👦 Plan de Yeider", `Yeider agregó un nuevo plan: "${text}"`);
       } else {
         sendPushNotification("👧 Plan de Nataly", `Nataly agregó un nuevo plan: "${text}"`);
@@ -1386,16 +1512,14 @@
 
     function deleteSelectedDaysData() {
       if (selectedDatesList.length === 0) return;
-      if (!confirm(`¿Estás seguro de borrar todos los planes y etiquetas de los ${selectedDatesList.length} días seleccionados?`)) return;
+      if (!confirm(`¿Borrar los planes y etiquetas de los ${selectedDatesList.length} días seleccionados?`)) return;
 
       selectedDatesList.forEach(targetDate => {
-        // Borrar planes de esos días
         Object.keys(allPlans).forEach(key => {
           if (allPlans[key].date === targetDate && !key.startsWith('class_default_')) {
             plansRef.child(key).remove();
           }
         });
-        // Borrar etiquetas de esos días
         Object.keys(allTags).forEach(key => {
           if (allTags[key].date === targetDate) {
             tagsRef.child(key).remove();
