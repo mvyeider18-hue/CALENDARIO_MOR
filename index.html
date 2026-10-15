@@ -428,11 +428,6 @@
       transition: background-color 0.4s;
     }
 
-    .hour-slot.highlight-slot {
-      background: #fef9c3 !important;
-      border-left-color: var(--gold-hoy) !important;
-    }
-
     .hour-time {
       font-size: 0.72rem;
       font-weight: 400;
@@ -708,13 +703,13 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <script>
-    // Registro del Service Worker para Notificaciones Móviles Reales
+    // Service Worker PWA para manejo de notificaciones en celulares
     if ('serviceWorker' in navigator) {
       const swCode = `
         self.addEventListener('notificationclick', function(event) {
           event.notification.close();
           event.waitUntil(
-            clients.matchAll({ type: 'window' }).then(function(clientList) {
+            clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
               if (clientList.length > 0) return clientList[0].focus();
               return clients.openWindow('/');
             })
@@ -747,9 +742,9 @@
     let currentMonthDate = new Date();
     let selectedDayDate = new Date();
     let selectedPersonFilter = 'all';
-    let targetScrollSlot = null;
     let editingPlanKey = null;
     let countdownInterval = null;
+    let knownPlanKeys = null;
     
     let isMultiSelectActive = false;
     let selectedDatesList = [];
@@ -798,7 +793,7 @@
       if (!("Notification" in window)) return alert("Este celular no admite notificaciones push.");
       Notification.requestPermission().then(permission => {
         if (permission === "granted") {
-          alert("¡Notificaciones activadas en tu móvil!");
+          alert("¡Notificaciones activadas en tu celular!");
           sendPushNotification("❤️ Notificaciones Activas", "Recibirás avisos de planes añadidos y recordatorios.");
         }
       });
@@ -879,8 +874,27 @@
       }
     }
 
+    // Detector de nuevos planes agregados por la otra persona en tiempo real
     plansRef.on('value', (snapshot) => {
-      allPlans = snapshot.val() || {};
+      const newPlans = snapshot.val() || {};
+      
+      if (knownPlanKeys !== null) {
+        Object.keys(newPlans).forEach(key => {
+          if (!knownPlanKeys.includes(key)) {
+            const p = newPlans[key];
+            if (p.person === 'both') {
+              sendPushNotification("💑 Nuevo Plan Creado", `Se agregó un nuevo plan para ambos: "${p.text}"`);
+            } else if (p.person === 'yeider') {
+              sendPushNotification("👦 Plan de Yeider", `Yeider agregó un nuevo plan: "${p.text}"`);
+            } else if (p.person === 'nataly') {
+              sendPushNotification("👧 Plan de Nataly", `Nataly agregó un nuevo plan: "${p.text}"`);
+            }
+          }
+        });
+      }
+      
+      knownPlanKeys = Object.keys(newPlans);
+      allPlans = newPlans;
       renderCurrentView();
       renderManagementList();
       renderExpiredList();
@@ -934,7 +948,6 @@
       }
     }
 
-    // Modal de Detalle al Tocar un Puntito con Cuenta Regresiva
     function openDotDetail(event, planKey) {
       event.stopPropagation();
       const plan = allPlans[planKey];
@@ -1532,7 +1545,6 @@
       const diffHours = getTimeDifferenceHours();
 
       if (editingPlanKey) {
-        // Modo Edición
         plansRef.child(editingPlanKey).update({
           text: text,
           person: assignOption === 'both' ? 'yeider' : assignOption,
@@ -1542,7 +1554,6 @@
         });
         alert("¡Plan actualizado correctamente!");
       } else {
-        // Modo Creación Nueva
         const datesToProcess = selectedDatesList.length > 0 ? [...selectedDatesList] : [activeSlotInfo.date];
 
         datesToProcess.forEach(targetDate => {
@@ -1577,14 +1588,6 @@
         });
 
         alert("¡Plan añadido!");
-
-        if (assignOption === 'both') {
-          sendPushNotification("💑 Nuevo Plan Creado", `Se agregó un nuevo plan para ambos: "${text}"`);
-        } else if (assignOption === 'yeider') {
-          sendPushNotification("👦 Plan de Yeider", `Yeider agregó un nuevo plan: "${text}"`);
-        } else {
-          sendPushNotification("👧 Plan de Nataly", `Nataly agregó un nuevo plan: "${text}"`);
-        }
       }
 
       closeModal('planModal');
