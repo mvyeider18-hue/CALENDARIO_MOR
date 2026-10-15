@@ -24,7 +24,6 @@
       --sombra: rgba(62, 39, 35, 0.12);
     }
 
-    /* Estilos Modo Oscuro */
     body.dark-mode {
       --fondo-body: #1c1917;
       --card-bg: #292524;
@@ -256,13 +255,8 @@
       position: relative;
     }
 
-    .calendar-cell.selected-multi {
-      border: 2px solid var(--cafe-tierra) !important;
-    }
-
-    .calendar-cell.is-today {
-      border: 2px solid var(--gold-hoy) !important;
-    }
+    .calendar-cell.selected-multi { border: 2px solid var(--cafe-tierra) !important; }
+    .calendar-cell.is-today { border: 2px solid var(--gold-hoy) !important; }
 
     .calendar-cell.is-today::after {
       content: "HOY";
@@ -277,9 +271,7 @@
       border-radius: 6px;
     }
 
-    .calendar-cell.other-month {
-      opacity: 0.35;
-    }
+    .calendar-cell.other-month { opacity: 0.35; }
 
     .cell-header {
       display: flex;
@@ -289,9 +281,7 @@
       font-weight: 400;
     }
 
-    .calendar-cell.anniversary {
-      border: 1.5px solid var(--aniversario);
-    }
+    .calendar-cell.anniversary { border: 1.5px solid var(--aniversario); }
 
     .shift-mini-tag {
       font-size: 0.65rem;
@@ -343,21 +333,17 @@
     }
 
     .dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       cursor: pointer;
       transition: transform 0.15s;
     }
 
-    .dot:hover {
-      transform: scale(1.4);
-    }
-
+    .dot:hover { transform: scale(1.4); }
     .dot.yeider { background-color: var(--cafe-tierra); }
     .dot.nataly { background-color: var(--aniversario); }
 
-    /* VISTA DIA A DIA */
     .day-card {
       background: var(--blanco);
       border: 1.5px solid var(--beige-mediano);
@@ -497,9 +483,7 @@
       padding: 12px;
     }
 
-    .expired-section {
-      border-color: #ef4444;
-    }
+    .expired-section { border-color: #ef4444; }
 
     .postponed-section h3, .management-section h3, .expired-section h3 {
       margin-top: 0;
@@ -565,6 +549,18 @@
       color: var(--texto-principal);
     }
 
+    .countdown-box {
+      background: var(--blanco);
+      border: 1px solid var(--gold-hoy);
+      padding: 8px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 10px 0;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--cafe-tierra);
+    }
+
     .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
     .btn-save-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--cafe-tierra); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
     .btn-cancel-modal { font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--beige-mediano); color: var(--texto-principal); border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
@@ -594,7 +590,6 @@
       <button class="btn-view" onclick="requestNotificationPermission()" style="background:var(--cafe-tierra); color:white; border:none;">🔔 Activar Notificaciones</button>
     </div>
 
-    <!-- Barra de Selección Múltiple -->
     <div class="multi-select-bar">
       <button class="btn-multi" id="btnToggleMulti" onclick="toggleMultiSelectMode()">☑️ Selección Múltiple</button>
       <button class="btn-multi" id="btnGroupPlan" onclick="openGroupPlanModal()" style="display:none;">➕ Plan en Grupo</button>
@@ -612,7 +607,6 @@
     <div id="weekContainer" style="display: none;"></div>
     <div id="dayContainer" style="display: none;"></div>
 
-    <!-- Sección de Planes Vencidos / No Tiqueados -->
     <div class="expired-section">
       <h3>⚠️ Planes Pasados Sin Tiquear</h3>
       <ul id="expiredList" class="expired-list">
@@ -627,7 +621,6 @@
       </ul>
     </div>
 
-    <!-- Gestión de Planes Recurrentes y Etiquetas -->
     <div class="management-section">
       <h3>⚙️ Gestión de Planes Recurrentes y Etiquetas</h3>
       <ul id="managementList" class="management-list">
@@ -636,7 +629,7 @@
     </div>
   </div>
 
-  <!-- Modal Individual / Ambos -->
+  <!-- Modal Crear / Editar Plan -->
   <div class="modal" id="planModal">
     <div class="modal-content">
       <h3 id="modalTitle">Nuevo Plan</h3>
@@ -654,7 +647,7 @@
         <option value="none">Única vez</option>
         <option value="daily">Todos los días</option>
         <option value="weekly">Todas las semanas</option>
-        <option value="monthly">Todos los meses (Ej. día 4)</option>
+        <option value="monthly">Todos los meses</option>
       </select>
 
       <label style="font-size: 0.78rem; font-weight:300; color:var(--cafe-suave);">Antelación de Alerta:</label>
@@ -668,6 +661,26 @@
       <div class="modal-buttons">
         <button class="btn-cancel-modal" onclick="closeModal('planModal')">Cancelar</button>
         <button class="btn-save-modal" onclick="savePlan()">Guardar 💾</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalle del Puntito (Cuenta Regresiva) -->
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <h3 id="detailTitle" style="margin-top:0; color:var(--cafe-tierra);">Detalle del Plan</h3>
+      <p id="detailPerson" style="font-size:0.85rem; margin:4px 0;"></p>
+      <p id="detailDateTime" style="font-size:0.82rem; margin:4px 0; color:var(--cafe-suave);"></p>
+      <p id="detailRecurrence" style="font-size:0.82rem; margin:4px 0;"></p>
+      
+      <div class="countdown-box">
+        ⏳ <b>Tiempo para Alerta:</b><br>
+        <span id="countdownText">--d --h --m --s</span>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn-cancel-modal" onclick="closeModal('detailModal')">Cerrar</button>
+        <button class="btn-save-modal" id="btnEditFromDetail">Editar ✏️</button>
       </div>
     </div>
   </div>
@@ -695,6 +708,23 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <script>
+    // Registro del Service Worker para Notificaciones Móviles Reales
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('notificationclick', function(event) {
+          event.notification.close();
+          event.waitUntil(
+            clients.matchAll({ type: 'window' }).then(function(clientList) {
+              if (clientList.length > 0) return clientList[0].focus();
+              return clients.openWindow('/');
+            })
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => console.log(err));
+    }
+
     const firebaseConfig = {
       apiKey: "AIzaSyD3DxpUgdxQZ5f5VOBO_NHfhyLnn-IwWbo",
       authDomain: "calendario-875fd.firebaseapp.com",
@@ -718,6 +748,8 @@
     let selectedDayDate = new Date();
     let selectedPersonFilter = 'all';
     let targetScrollSlot = null;
+    let editingPlanKey = null;
+    let countdownInterval = null;
     
     let isMultiSelectActive = false;
     let selectedDatesList = [];
@@ -763,11 +795,11 @@
     updateClocks();
 
     function requestNotificationPermission() {
-      if (!("Notification" in window)) return alert("Este navegador no admite notificaciones.");
+      if (!("Notification" in window)) return alert("Este celular no admite notificaciones push.");
       Notification.requestPermission().then(permission => {
         if (permission === "granted") {
-          alert("¡Notificaciones activadas correctamente en tu móvil!");
-          sendPushNotification("❤️ Notificaciones Activas", "A partir de ahora recibirás alertas de tus planes.");
+          alert("¡Notificaciones activadas en tu móvil!");
+          sendPushNotification("❤️ Notificaciones Activas", "Recibirás avisos de planes añadidos y recordatorios.");
         }
       });
     }
@@ -775,12 +807,18 @@
     function sendPushNotification(title, message) {
       if ("vibrate" in navigator) navigator.vibrate([200, 100, 200]);
       if (Notification.permission === "granted") {
-        new Notification(title, {
-          body: message,
-          icon: "https://i.imgur.com/SPBevo4.png",
-          badge: "https://i.imgur.com/SPBevo4.png",
-          vibrate: [200, 100, 200]
-        });
+        if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.ready.then(reg => {
+            reg.showNotification(title, {
+              body: message,
+              icon: "https://i.imgur.com/SPBevo4.png",
+              badge: "https://i.imgur.com/SPBevo4.png",
+              vibrate: [200, 100, 200]
+            });
+          });
+        } else {
+          new Notification(title, { body: message, icon: "https://i.imgur.com/SPBevo4.png" });
+        }
       }
     }
 
@@ -896,11 +934,48 @@
       }
     }
 
-    function goToPlanSlot(event, dateStr, hour, person) {
-      event.stopPropagation(); // Evita conflicto de clicks
-      selectedDayDate = new Date(dateStr + 'T00:00:00');
-      targetScrollSlot = `slot_${person}_${hour}`;
-      switchView('day');
+    // Modal de Detalle al Tocar un Puntito con Cuenta Regresiva
+    function openDotDetail(event, planKey) {
+      event.stopPropagation();
+      const plan = allPlans[planKey];
+      if (!plan) return;
+
+      document.getElementById('detailTitle').innerText = plan.text;
+      document.getElementById('detailPerson').innerText = `👤 Asignado/Añadido: ${plan.person.toUpperCase()}`;
+      document.getElementById('detailDateTime').innerText = `📅 Fecha: ${plan.date} | ⏰ Hora: ${plan.hour}`;
+      document.getElementById('detailRecurrence').innerText = `🔁 Repetición de Notificación: ${plan.recurrence && plan.recurrence !== 'none' ? plan.recurrence : 'Única vez'}`;
+
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      const updateCountdown = () => {
+        const dateParts = plan.date.split('-');
+        const hourParts = plan.hour.split(':');
+        const targetTime = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], hourParts[0], hourParts[1]);
+        const advanceMin = parseInt(plan.advanceNotice || 0);
+        const notifyTime = new Date(targetTime.getTime() - (advanceMin * 60 * 1000));
+        
+        const diff = notifyTime - new Date();
+
+        if (diff <= 0) {
+          document.getElementById('countdownText').innerText = "🔔 ¡Alerta Notificada o en proceso!";
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((diff % (1000 * 60)) / 1000);
+          document.getElementById('countdownText').innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
+        }
+      };
+
+      updateCountdown();
+      countdownInterval = setInterval(updateCountdown, 1000);
+
+      document.getElementById('btnEditFromDetail').onclick = () => {
+        closeModal('detailModal');
+        openEditPlanModal(planKey);
+      };
+
+      document.getElementById('detailModal').style.display = 'flex';
     }
 
     function switchView(view) {
@@ -989,7 +1064,7 @@
 
         let dotsHTML = '<div class="plan-dots">';
         dayPlans.forEach(p => {
-          dotsHTML += `<div class="dot ${p.person}" title="${p.text} (${p.hour})" onclick="goToPlanSlot(event, '${dateStr}', '${p.hour}', '${p.person}')"></div>`;
+          dotsHTML += `<div class="dot ${p.person}" title="${p.text}" onclick="openDotDetail(event, '${p.key}')"></div>`;
         });
         dotsHTML += '</div>';
 
@@ -1064,7 +1139,7 @@
 
       let dotsHTML = '<div class="plan-dots">';
       dayPlans.forEach(p => {
-        dotsHTML += `<div class="dot ${p.person}" title="${p.text} (${p.hour})" onclick="goToPlanSlot(event, '${dateStr}', '${p.hour}', '${p.person}')"></div>`;
+        dotsHTML += `<div class="dot ${p.person}" title="${p.text}" onclick="openDotDetail(event, '${p.key}')"></div>`;
       });
       dotsHTML += '</div>';
 
@@ -1158,19 +1233,6 @@
 
       container.appendChild(controlsWrapper);
       container.appendChild(dayCard);
-
-      // Auto scroll al slot de hora si viene de un puntito
-      if (targetScrollSlot) {
-        setTimeout(() => {
-          const slotElem = document.getElementById(targetScrollSlot);
-          if (slotElem) {
-            slotElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            slotElem.classList.add('highlight-slot');
-            setTimeout(() => slotElem.classList.remove('highlight-slot'), 2000);
-          }
-          targetScrollSlot = null;
-        }, 150);
-      }
     }
 
     function selectDayFromSlider(dateStr) {
@@ -1207,6 +1269,7 @@
           <div class="plan-item ${p.status || ''}">
             <span>${p.text} ${p.recurrence && p.recurrence !== 'none' ? '🔁' : ''}</span>
             <div class="plan-actions">
+              <button class="btn-icon" title="Editar" onclick="openEditPlanModal('${p.key}')">✏️</button>
               <button class="btn-icon" title="Completado" onclick="setPlanStatus('${p.key}', 'completed')">✔</button>
               <button class="btn-icon" title="Incompletado" onclick="setPlanStatus('${p.key}', 'failed')">❌</button>
               <button class="btn-icon" title="Aplazar" onclick="postponePlan('${p.key}', '${p.text}')">📌</button>
@@ -1215,10 +1278,8 @@
           </div>
         `).join('');
 
-        const slotId = `slot_${person}_${slotHourKey}`;
-
         return `
-          <div class="hour-slot" id="${slotId}">
+          <div class="hour-slot" id="slot_${person}_${slotHourKey}">
             <div class="hour-time">
               <span>⏰ ${primaryTimeText}</span>
               <span class="sec-time">${secondaryTimeText}</span>
@@ -1325,6 +1386,7 @@
             li.innerHTML = `
               <span>⚠️ <b>${p.text}</b> (${p.date} - ${p.hour}) - ${p.person.toUpperCase()}</span>
               <div>
+                <button class="btn-icon" title="Editar" onclick="openEditPlanModal('${key}')">✏️</button>
                 <button class="btn-icon" title="Marcar Realizado" onclick="setPlanStatus('${key}', 'completed')">✔</button>
                 <button class="btn-icon" title="Marcar No Realizado" onclick="setPlanStatus('${key}', 'failed')">❌</button>
                 <button class="btn-icon" title="Reasignar a Hoy" onclick="reassignPlanToToday('${key}')">📅 Hoy</button>
@@ -1383,6 +1445,7 @@
           li.innerHTML = `
             <span>🔁 Recurrente: <b>${p.text}</b> (${p.recurrence}) - ${p.person.toUpperCase()}</span>
             <div>
+              <button class="btn-icon" onclick="openEditPlanModal('${key}')">✏️ Editar</button>
               <button class="btn-icon" onclick="toggleHidePlan('${key}', ${p.hidden ? 'false' : 'true'})">${p.hidden ? '👁️ Mostrar' : '🙈 Ocultar'}</button>
               <button class="btn-icon" onclick="deletePlan('${key}')">🗑️ Eliminar</button>
             </div>
@@ -1409,6 +1472,7 @@
     }
 
     function openPlanModal(date, person, hour) {
+      editingPlanKey = null;
       activeSlotInfo = { date, person, hour };
       document.getElementById('modalTitle').innerText = `Nuevo Plan (${hour})`;
       document.getElementById('planTextInput').value = '';
@@ -1418,8 +1482,23 @@
       document.getElementById('planModal').style.display = 'flex';
     }
 
+    function openEditPlanModal(planKey) {
+      const plan = allPlans[planKey];
+      if (!plan) return;
+      editingPlanKey = planKey;
+      activeSlotInfo = { date: plan.date, person: plan.person, hour: plan.hour };
+      
+      document.getElementById('modalTitle').innerText = `Editar Plan`;
+      document.getElementById('planTextInput').value = plan.text || '';
+      document.getElementById('planPersonAssign').value = plan.person || 'both';
+      document.getElementById('planRecurrence').value = plan.recurrence || 'none';
+      document.getElementById('planAdvanceNotice').value = plan.advanceNotice || '0';
+      document.getElementById('planModal').style.display = 'flex';
+    }
+
     function openGroupPlanModal() {
       if (selectedDatesList.length === 0) return alert("Selecciona al menos un día primero.");
+      editingPlanKey = null;
       activeSlotInfo = { date: selectedDatesList[0], person: 'yeider', hour: '09:00' };
       document.getElementById('modalTitle').innerText = `Plan para ${selectedDatesList.length} Días Seleccionados`;
       document.getElementById('planTextInput').value = '';
@@ -1437,6 +1516,9 @@
 
     function closeModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
+      if (modalId === 'detailModal' && countdownInterval) {
+        clearInterval(countdownInterval);
+      }
     }
 
     function savePlan() {
@@ -1448,45 +1530,61 @@
       if (!text) return alert('Escribe un texto para el plan.');
 
       const diffHours = getTimeDifferenceHours();
-      const datesToProcess = selectedDatesList.length > 0 ? [...selectedDatesList] : [activeSlotInfo.date];
 
-      datesToProcess.forEach(targetDate => {
-        const basePlan = {
-          date: targetDate,
+      if (editingPlanKey) {
+        // Modo Edición
+        plansRef.child(editingPlanKey).update({
           text: text,
+          person: assignOption === 'both' ? 'yeider' : assignOption,
           recurrence: recurrence,
           advanceNotice: advanceNotice,
-          status: 'pending',
-          notified: false,
-          hidden: false
-        };
+          notified: false
+        });
+        alert("¡Plan actualizado correctamente!");
+      } else {
+        // Modo Creación Nueva
+        const datesToProcess = selectedDatesList.length > 0 ? [...selectedDatesList] : [activeSlotInfo.date];
+
+        datesToProcess.forEach(targetDate => {
+          const basePlan = {
+            date: targetDate,
+            text: text,
+            recurrence: recurrence,
+            advanceNotice: advanceNotice,
+            status: 'pending',
+            notified: false,
+            hidden: false
+          };
+
+          if (assignOption === 'both') {
+            let yeiderHour = activeSlotInfo.hour;
+            let natalyHour = activeSlotInfo.hour;
+
+            if (activeSlotInfo.person === 'yeider') {
+              natalyHour = formatHourOffset(yeiderHour, -diffHours);
+            } else {
+              yeiderHour = formatHourOffset(natalyHour, diffHours);
+            }
+
+            plansRef.push({ ...basePlan, person: 'yeider', hour: yeiderHour });
+            plansRef.push({ ...basePlan, person: 'nataly', hour: natalyHour });
+
+          } else if (assignOption === 'yeider') {
+            plansRef.push({ ...basePlan, person: 'yeider', hour: activeSlotInfo.hour });
+          } else if (assignOption === 'nataly') {
+            plansRef.push({ ...basePlan, person: 'nataly', hour: activeSlotInfo.hour });
+          }
+        });
+
+        alert("¡Plan añadido!");
 
         if (assignOption === 'both') {
-          let yeiderHour = activeSlotInfo.hour;
-          let natalyHour = activeSlotInfo.hour;
-
-          if (activeSlotInfo.person === 'yeider') {
-            natalyHour = formatHourOffset(yeiderHour, -diffHours);
-          } else {
-            yeiderHour = formatHourOffset(natalyHour, diffHours);
-          }
-
-          plansRef.push({ ...basePlan, person: 'yeider', hour: yeiderHour });
-          plansRef.push({ ...basePlan, person: 'nataly', hour: natalyHour });
-
+          sendPushNotification("💑 Nuevo Plan Creado", `Se agregó un nuevo plan para ambos: "${text}"`);
         } else if (assignOption === 'yeider') {
-          plansRef.push({ ...basePlan, person: 'yeider', hour: activeSlotInfo.hour });
-        } else if (assignOption === 'nataly') {
-          plansRef.push({ ...basePlan, person: 'nataly', hour: activeSlotInfo.hour });
+          sendPushNotification("👦 Plan de Yeider", `Yeider agregó un nuevo plan: "${text}"`);
+        } else {
+          sendPushNotification("👧 Plan de Nataly", `Nataly agregó un nuevo plan: "${text}"`);
         }
-      });
-
-      if (assignOption === 'both') {
-        sendPushNotification("💑 Nuevo Plan Creado", `Se agregó un nuevo plan para ambos: "${text}"`);
-      } else if (assignOption === 'yeider') {
-        sendPushNotification("👦 Plan de Yeider", `Yeider agregó un nuevo plan: "${text}"`);
-      } else {
-        sendPushNotification("👧 Plan de Nataly", `Nataly agregó un nuevo plan: "${text}"`);
       }
 
       closeModal('planModal');
